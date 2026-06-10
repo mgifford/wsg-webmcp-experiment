@@ -47,3 +47,75 @@ searchButton.addEventListener('click', async () => {
     output.textContent = error.message;
   }
 });
+
+const listWebMcpToolsButton = document.querySelector('#list-webmcp-tools');
+const testWebMcpStatsButton = document.querySelector('#test-webmcp-stats');
+const webMcpOutput = document.querySelector('#webmcp-output');
+
+function getModelContext() {
+  return navigator.modelContext || document.modelContext || null;
+}
+
+if (listWebMcpToolsButton) {
+  listWebMcpToolsButton.addEventListener('click', async () => {
+    const modelContext = getModelContext();
+
+    if (!modelContext) {
+      webMcpOutput.textContent =
+        'WebMCP is not available in this browser.';
+      return;
+    }
+
+    if (typeof modelContext.getTools !== 'function') {
+      webMcpOutput.textContent =
+        'WebMCP is available, but this browser does not expose getTools(). The tools may still be registered for compatible agents.';
+      return;
+    }
+
+    try {
+      const tools = await modelContext.getTools();
+      webMcpOutput.textContent = JSON.stringify(tools, null, 2);
+    }
+    catch (error) {
+      webMcpOutput.textContent = error.message;
+    }
+  });
+}
+
+if (testWebMcpStatsButton) {
+  testWebMcpStatsButton.addEventListener('click', async () => {
+    const modelContext = getModelContext();
+
+    if (!modelContext) {
+      webMcpOutput.textContent =
+        'WebMCP is not available in this browser.';
+      return;
+    }
+
+    if (
+      typeof modelContext.getTools !== 'function' ||
+      typeof modelContext.executeTool !== 'function'
+    ) {
+      webMcpOutput.textContent =
+        'WebMCP is available, but this browser does not expose tool discovery and execution APIs for page-level testing.';
+      return;
+    }
+
+    try {
+      const tools = await modelContext.getTools();
+      const statsTool = tools.find((tool) => tool.name === 'wsg.stats');
+
+      if (!statsTool) {
+        webMcpOutput.textContent =
+          'wsg.stats was not found in the registered WebMCP tools.';
+        return;
+      }
+
+      const result = await modelContext.executeTool(statsTool, {});
+      webMcpOutput.textContent = JSON.stringify(result, null, 2);
+    }
+    catch (error) {
+      webMcpOutput.textContent = error.message;
+    }
+  });
+}
