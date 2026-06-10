@@ -99,7 +99,7 @@ if (testWebMcpStatsButton) {
     }
 
     try {
-      const result = await testing.executeTool('wsg.stats', {});
+      const result = await testing.executeTool('wsg.stats', '{}');
       webMcpOutput.textContent = JSON.stringify(result, null, 2);
     }
     catch (error) {
