@@ -6,9 +6,7 @@ let cachedData = null;
 let cachedIndex = null;
 
 export async function loadGuidelines() {
-  if (cachedData) {
-    return cachedData;
-  }
+  if (cachedData) return cachedData;
 
   const response = await fetch(GUIDELINES_URL);
 
@@ -21,9 +19,7 @@ export async function loadGuidelines() {
 }
 
 export async function getIndex() {
-  if (cachedIndex) {
-    return cachedIndex;
-  }
+  if (cachedIndex) return cachedIndex;
 
   const data = await loadGuidelines();
   cachedIndex = buildIndex(data);
@@ -60,10 +56,8 @@ export function buildIndex(data) {
       }
 
       for (const criterion of guideline.criteria || []) {
-        const criterionId = makeCriterionId(guideline.id, criterion.title);
-
         criteria.push({
-          id: criterionId,
+          id: makeCriterionId(guideline.id, criterion.title),
           title: criterion.title,
           description: criterion.description || '',
           resources: normalizeResources(criterion.resources || []),
@@ -121,6 +115,7 @@ export async function searchGuidelines({
     const matchesQuery =
       !normalizedQuery ||
       normalizeText([
+        item.id,
         item.guideline,
         item.subheading,
         item.categoryName,
@@ -145,16 +140,24 @@ export async function searchGuidelines({
   return results.slice(0, limit);
 }
 
+export async function getGuideline(idOrTitle) {
+  const index = await getIndex();
+  const search = normalizeText(idOrTitle);
+
+  return index.guidelines.find((guideline) =>
+    normalizeText(guideline.id) === search ||
+    normalizeText(guideline.guideline) === search
+  ) || null;
+}
+
 export async function getCriterion(idOrTitle) {
   const index = await getIndex();
   const search = normalizeText(idOrTitle);
 
-  return index.criteria.find((criterion) => {
-    return (
-      normalizeText(criterion.id) === search ||
-      normalizeText(criterion.title) === search
-    );
-  }) || null;
+  return index.criteria.find((criterion) =>
+    normalizeText(criterion.id) === search ||
+    normalizeText(criterion.title) === search
+  ) || null;
 }
 
 export async function listByTag(tag) {
@@ -174,26 +177,35 @@ export async function listTags() {
 export async function findResources({
   query = '',
   tag = '',
+  guideline = '',
   limit = 50
 } = {}) {
-  const matchingGuidelines = await searchGuidelines({
-    query,
-    tag,
-    limit: 100
-  });
+  let matchingGuidelines;
+
+  if (guideline) {
+    const item = await getGuideline(guideline);
+    matchingGuidelines = item ? [item] : [];
+  }
+  else {
+    matchingGuidelines = await searchGuidelines({
+      query,
+      tag,
+      limit: 100
+    });
+  }
 
   const resources = [];
 
-  for (const guideline of matchingGuidelines) {
-    for (const criterion of guideline.criteria || []) {
+  for (const item of matchingGuidelines) {
+    for (const criterion of item.criteria || []) {
       for (const resource of normalizeResources(criterion.resources || [])) {
         resources.push({
           ...resource,
           criterionTitle: criterion.title,
-          guidelineId: guideline.id,
-          guideline: guideline.guideline,
-          guidelineUrl: guideline.url,
-          categoryName: guideline.categoryName
+          guidelineId: item.id,
+          guideline: item.guideline,
+          guidelineUrl: item.url,
+          categoryName: item.categoryName
         });
       }
     }
@@ -202,23 +214,100 @@ export async function findResources({
   return resources.slice(0, limit);
 }
 
+export async function suggestAuditQuestions({
+  guideline = '',
+  tag = '',
+  query = '',
+  limit = 25
+} = {}) {
+  const guidelines = guideline
+    ? [await getGuideline(guideline)].filter(Boolean)
+    : await searchGuidelines({ query, tag, limit: 10 });
+
+  const questions = [];
+
+  for (const item of guidelines) {
+    for (const criterion of item.criteria || []) {
+      questions.push({
+        guidelineId: item.id,
+        guideline: item.guideline,
+        criterion: criterion.title,
+        question: `Has the team ${toAuditPhrase(criterion.description)}`,
+        sourceUrl: item.url
+      });
+    }
+  }
+
+  return {
+    status: 'Draft audit questions only. Human review is required.',
+    questions: questions.slice(0, limit)
+  };
+}
+
+export async function suggestProcurementRequirements({
+  guideline = '',
+  tag = '',
+  query = '',
+  limit = 25
+} = {}) {
+  const guidelines = guideline
+    ? [await getGuideline(guideline)].filter(Boolean)
+    : await searchGuidelines({ query, tag, limit: 10 });
+
+  const requirements = [];
+
+  for (const item of guidelines) {
+    for (const criterion of item.criteria || []) {
+      requirements.push({
+        guidelineId: item.id,
+        guideline: item.guideline,
+        criterion: criterion.title,
+        requirement: `The supplier SHOULD ${toRequirementPhrase(criterion.description)}`,
+        sourceUrl: item.url
+      });
+    }
+  }
+
+  return {
+    status: 'Draft procurement language only. Legal and procurement review is required.',
+    requirements: requirements.slice(0, limit)
+  };
+}
+
 export async function generateConformanceClaimDraft({
   criteria = [],
+  guidelines = [],
   evaluator = '',
   project = '',
   notes = ''
 } = {}) {
   const index = await getIndex();
 
-  const selectedCriteria = criteria
-    .map((criterion) => {
-      const search = normalizeText(criterion);
-      return index.criteria.find((item) =>
-        normalizeText(item.id) === search ||
-        normalizeText(item.title) === search
-      );
-    })
-    .filter(Boolean);
+  const selectedCriteria = [];
+
+  for (const criterion of criteria) {
+    const found = await getCriterion(criterion);
+    if (found) selectedCriteria.push(found);
+  }
+
+  for (const guideline of guidelines) {
+    const foundGuideline = await getGuideline(guideline);
+
+    if (foundGuideline) {
+      for (const criterion of foundGuideline.criteria || []) {
+        selectedCriteria.push({
+          id: makeCriterionId(foundGuideline.id, criterion.title),
+          title: criterion.title,
+          description: criterion.description || '',
+          guidelineId: foundGuideline.id,
+          guideline: foundGuideline.guideline,
+          guidelineUrl: foundGuideline.url,
+          categoryName: foundGuideline.categoryName,
+          tags: foundGuideline.tags || []
+        });
+      }
+    }
+  }
 
   return {
     title: 'Draft WSG Conformance Claim',
@@ -234,12 +323,42 @@ export async function generateConformanceClaimDraft({
     criteria: selectedCriteria.map((criterion) => ({
       id: criterion.id,
       title: criterion.title,
+      guidelineId: criterion.guidelineId,
       guideline: criterion.guideline,
       guidelineUrl: criterion.guidelineUrl,
       categoryName: criterion.categoryName
     })),
     notes
   };
+}
+
+function toAuditPhrase(description) {
+  return String(description || '')
+    .trim()
+    .replace(/\.$/, '')
+    .replace(/^Ensure /i, 'ensured ')
+    .replace(/^Identify /i, 'identified ')
+    .replace(/^Evaluate /i, 'evaluated ')
+    .replace(/^Use /i, 'used ')
+    .replace(/^Avoid /i, 'avoided ')
+    .replace(/^Remove /i, 'removed ')
+    .replace(/^Minimize /i, 'minimized ')
+    .replace(/^Provide /i, 'provided ')
+    + '?';
+}
+
+function toRequirementPhrase(description) {
+  return String(description || '')
+    .trim()
+    .replace(/\.$/, '')
+    .replace(/^Ensure /i, 'ensure ')
+    .replace(/^Identify /i, 'identify ')
+    .replace(/^Evaluate /i, 'evaluate ')
+    .replace(/^Use /i, 'use ')
+    .replace(/^Avoid /i, 'avoid ')
+    .replace(/^Remove /i, 'remove ')
+    .replace(/^Minimize /i, 'minimize ')
+    .replace(/^Provide /i, 'provide ');
 }
 
 function makeCriterionId(guidelineId, title) {
@@ -259,9 +378,7 @@ function normalizeResources(resources) {
 }
 
 function normalizeText(value) {
-  return String(value || '')
-    .trim()
-    .toLowerCase();
+  return String(value || '').trim().toLowerCase();
 }
 
 function slugify(value) {
