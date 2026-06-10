@@ -134,6 +134,16 @@ Particular areas of interest include:
 * AI interoperability
 * Structured guideline data
 
+## AI Assistance
+
+This project was developed with the assistance of generative AI tools, including ChatGPT (OpenAI).
+
+AI was used to support brainstorming, software design discussions, code generation, documentation drafting, and exploration of WebMCP use cases.
+
+All design decisions, code review, validation, and project direction remain the responsibility of the project maintainer.
+
+Users should independently review any generated code, documentation, or recommendations before relying on them.
+
 ## License
 
 All documents in this Repository are licensed by contributors
