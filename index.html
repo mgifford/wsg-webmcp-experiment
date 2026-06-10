@@ -6,105 +6,86 @@
 </head>
 <body>
   <header>
-    <h1>Experiment</h1>
+    <h1>WSG WebMCP Experiment</h1>
 
     <nav>
       <a href="./index.html">Experiment</a>
       |
       <a href="./background.html">Background</a>
       |
-      <a href="https://www.w3.org/TR/web-sustainability-guidelines/">W3C Web Sustainability Guidelines</a>
+      <a href="https://www.w3.org/TR/web-sustainability-guidelines/">W3C WSG</a>
     </nav>
-    
   </header>
-  
-  <h1>WSG WebMCP Experiment</h1>
 
-  <h2>Why WebMCP?</h2>
+  <main>
+    <p id="webmcp-status">Checking WebMCP...</p>
 
-  <p>
-  Web Sustainability Guidelines are currently published primarily as a document intended for human readers.
-  This experiment explores whether WebMCP can expose sustainability guidance as structured tools that can be discovered and used directly by AI assistants, auditing tools, procurement systems, and development environments.
-  </p>
+    <p>
+      Experimental browser interface for the Web Sustainability Guidelines JSON data.
+    </p>
 
-<p>
-  The goal is not to replace standards with AI, but to make standards easier for AI systems to understand and apply accurately.
-</p>
+    <section>
+      <h2>What WebMCP enables</h2>
 
-  
-   <h2>Interact with the WSG through WebMCP </h2>
+      <p>
+        This page works as a normal JavaScript demo in modern browsers. When WebMCP is
+        available, it also exposes selected WSG functions as structured tools that compatible
+        AI agents can discover and call.
+      </p>
 
-  <p id="webmcp-status">Checking WebMCP...</p>
+      <p>
+        The difference is simple: without WebMCP, humans use buttons and forms. With WebMCP,
+        AI agents can call tools such as <code>wsg.search</code>,
+        <code>wsg.get_guideline</code>, or <code>wsg.suggest_audit_questions</code>
+        directly from the page.
+      </p>
+    </section>
 
-  <p>Experimental browser interface for the Web Sustainability Guidelines JSON data.</p>
+    <section>
+      <h2>Registered WebMCP tools</h2>
 
-  <section>
-    <h2>Search WSG</h2>
-    <label for="search-query">Search term</label>
-    <input id="search-query" type="search" value="accessibility">
-    <button id="search-wsg" type="button">Search WSG</button>
-  </section>
+      <ul>
+        <li><code>wsg.search</code>: search WSG guidance by keyword, category, or tag.</li>
+        <li><code>wsg.get_guideline</code>: get a full WSG guideline by ID or exact title.</li>
+        <li><code>wsg.get_criterion</code>: get a WSG success criterion by generated ID or exact title.</li>
+        <li><code>wsg.list_by_tag</code>: list guidance connected to a WSG tag.</li>
+        <li><code>wsg.find_resources</code>: find supporting WSG resources.</li>
+        <li><code>wsg.suggest_audit_questions</code>: generate draft audit questions.</li>
+        <li><code>wsg.suggest_procurement_requirements</code>: generate draft procurement requirements.</li>
+        <li><code>wsg.generate_conformance_claim_draft</code>: generate a draft conformance claim.</li>
+        <li><code>wsg.stats</code>: show WSG data statistics.</li>
+      </ul>
+    </section>
 
-  <section>
-    <h2>Stats</h2>
-    <button id="load-stats" type="button">Load WSG stats</button>
-  </section>
+    <section>
+      <h2>Search WSG</h2>
 
-  <pre id="output"></pre>
+      <label for="search-query">Search term</label>
+      <input id="search-query" type="search" value="accessibility">
+
+      <button id="search-wsg" type="button">Search WSG</button>
+    </section>
+
+    <section>
+      <h2>Stats</h2>
+
+      <button id="load-stats" type="button">Load WSG stats</button>
+    </section>
+
+    <section>
+      <h2>Output</h2>
+
+      <pre id="output"></pre>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      This experimental project was developed with assistance from generative AI tools.
+      Human review and validation remain essential.
+    </p>
+  </footer>
 
   <script type="module" src="./src/app.js"></script>
-
-
-  <section>
-  <h2>What happens when WebMCP is available?</h2>
-
-  <p>
-    When WebMCP is available, this page exposes selected WSG functions as structured
-    tools that can be discovered and called by compatible AI agents or browser tooling.
-    The visible search form still works in any browser, but WebMCP adds a machine-facing
-    interface.
-  </p>
-
-  <p>
-    For example, instead of an AI assistant scraping this page or guessing from training
-    data, it could call:
-  </p>
-
-  <pre><code>wsg.search({ "query": "accessibility" })</code></pre>
-
-  <p>
-    The page can then return current WSG data from <code>guidelines.json</code>, including
-    matching guidelines, criteria, tags, benefits, and resources.
-  </p>
-
-  <p>
-    In practical terms, this could allow an AI assistant to help a team draft audit
-    questions, identify relevant sustainability criteria, find supporting resources,
-    or prepare draft procurement language while staying grounded in the published WSG data.
-  </p>
-
-  <p>
-    WebMCP does not certify conformance. It makes the WSG more discoverable and usable
-    by AI-assisted workflows.
-  </p>
-</section>
-
-  <section>
-  <h2>Registered WebMCP tools</h2>
-
-  <ul>
-    <li><code>wsg.search</code> searches WSG guidance by keyword.</li>
-    <li><code>wsg.list_by_tag</code> lists guidance connected to a WSG tag.</li>
-    <li><code>wsg.stats</code> returns counts for categories, guidelines, criteria, and tags.</li>
-  </ul>
-</section>
-
-<footer>
-  <p>
-    This experimental project was developed with assistance from generative AI tools.
-    Human review and validation remain essential.
-  </p>
-</footer>
-  
 </body>
 </html>
