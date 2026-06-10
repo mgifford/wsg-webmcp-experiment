@@ -30,3 +30,20 @@ button.addEventListener('click', async () => {
     output.textContent = error.message;
   }
 });
+
+const searchButton = document.querySelector('#search-wsg');
+const searchInput = document.querySelector('#search-query');
+
+searchButton.addEventListener('click', async () => {
+  try {
+    const results = await searchGuidelines({
+      query: searchInput.value,
+      limit: 10
+    });
+
+    output.textContent = JSON.stringify(results, null, 2);
+  }
+  catch (error) {
+    output.textContent = error.message;
+  }
+});
