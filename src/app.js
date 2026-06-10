@@ -52,28 +52,28 @@ const listWebMcpToolsButton = document.querySelector('#list-webmcp-tools');
 const testWebMcpStatsButton = document.querySelector('#test-webmcp-stats');
 const webMcpOutput = document.querySelector('#webmcp-output');
 
-function getModelContext() {
-  return navigator.modelContext || document.modelContext || null;
+function getModelContextTesting() {
+  return navigator.modelContextTesting || null;
 }
 
 if (listWebMcpToolsButton) {
   listWebMcpToolsButton.addEventListener('click', async () => {
-    const modelContext = getModelContext();
+    const testing = getModelContextTesting();
 
-    if (!modelContext) {
+    if (!testing) {
       webMcpOutput.textContent =
-        'WebMCP is not available in this browser.';
+        'WebMCP tools are registered, but navigator.modelContextTesting is not available. Use Chrome DevTools → Application → WebMCP to inspect tools.';
       return;
     }
 
-    if (typeof modelContext.getTools !== 'function') {
+    if (typeof testing.listTools !== 'function') {
       webMcpOutput.textContent =
-        'WebMCP is available, but this browser does not expose getTools(). The tools may still be registered for compatible agents.';
+        'navigator.modelContextTesting is available, but listTools() is not exposed in this browser build.';
       return;
     }
 
     try {
-      const tools = await modelContext.getTools();
+      const tools = await testing.listTools();
       webMcpOutput.textContent = JSON.stringify(tools, null, 2);
     }
     catch (error) {
@@ -84,34 +84,22 @@ if (listWebMcpToolsButton) {
 
 if (testWebMcpStatsButton) {
   testWebMcpStatsButton.addEventListener('click', async () => {
-    const modelContext = getModelContext();
+    const testing = getModelContextTesting();
 
-    if (!modelContext) {
+    if (!testing) {
       webMcpOutput.textContent =
-        'WebMCP is not available in this browser.';
+        'WebMCP tools are registered, but navigator.modelContextTesting is not available. Use Chrome DevTools → Application → WebMCP to test tool invocation.';
       return;
     }
 
-    if (
-      typeof modelContext.getTools !== 'function' ||
-      typeof modelContext.executeTool !== 'function'
-    ) {
+    if (typeof testing.executeTool !== 'function') {
       webMcpOutput.textContent =
-        'WebMCP is available, but this browser does not expose tool discovery and execution APIs for page-level testing.';
+        'navigator.modelContextTesting is available, but executeTool() is not exposed in this browser build.';
       return;
     }
 
     try {
-      const tools = await modelContext.getTools();
-      const statsTool = tools.find((tool) => tool.name === 'wsg.stats');
-
-      if (!statsTool) {
-        webMcpOutput.textContent =
-          'wsg.stats was not found in the registered WebMCP tools.';
-        return;
-      }
-
-      const result = await modelContext.executeTool(statsTool, {});
+      const result = await testing.executeTool('wsg.stats', {});
       webMcpOutput.textContent = JSON.stringify(result, null, 2);
     }
     catch (error) {
