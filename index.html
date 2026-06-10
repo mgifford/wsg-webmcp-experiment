@@ -57,6 +57,27 @@
       </ul>
     </section>
 
+<section>
+  <h2>WebMCP Diagnostics</h2>
+
+  <p>
+    These controls test whether this browser exposes WebMCP tool discovery or
+    invocation features. They are separate from the normal JavaScript demo.
+  </p>
+
+  <button id="list-webmcp-tools" type="button">
+    List registered WebMCP tools
+  </button>
+
+  <button id="test-webmcp-stats" type="button">
+    Test wsg.stats through WebMCP
+  </button>
+
+  <pre id="webmcp-output"></pre>
+</section>
+
+<pre id="tool-output"></pre>
+    
     <section>
       <h2>Search WSG</h2>
 
@@ -78,7 +99,7 @@
       <pre id="output"></pre>
     </section>
   </main>
-
+  
   <footer>
     <p>
       This experimental project was developed with assistance from generative AI tools.
