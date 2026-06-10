@@ -4,6 +4,10 @@ import {
   listTags
 } from './wsg-data.js';
 
+import { registerWsgTools } from './webmcp-tools.js';
+
+registerWsgTools();
+
 const output = document.querySelector('#output');
 const button = document.querySelector('#load-stats');
 
