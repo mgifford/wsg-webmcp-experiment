@@ -5,24 +5,23 @@
   <title>WSG WebMCP Experiment</title>
 </head>
 <body>
-  
   <h1>WSG WebMCP Experiment</h1>
 
-  <div id="webmcp-status">
-    Checking WebMCP...
-  </div>
+  <p id="webmcp-status">Checking WebMCP...</p>
 
-  <input id="search-query" value="accessibility">
-  
-  <button id="search-wsg">Search WSG</button>
-  
-  <p>
-    Experimental browser interface for the Web Sustainability Guidelines JSON data.
-  </p>
+  <p>Experimental browser interface for the Web Sustainability Guidelines JSON data.</p>
 
-  <button id="load-stats">Load WSG stats</button>
+  <section>
+    <h2>Search WSG</h2>
+    <label for="search-query">Search term</label>
+    <input id="search-query" type="search" value="accessibility">
+    <button id="search-wsg" type="button">Search WSG</button>
+  </section>
 
-  <div id="webmcp-status"></div>
+  <section>
+    <h2>Stats</h2>
+    <button id="load-stats" type="button">Load WSG stats</button>
+  </section>
 
   <pre id="output"></pre>
 
