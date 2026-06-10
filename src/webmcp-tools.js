@@ -7,20 +7,35 @@ import {
 } from './wsg-data.js';
 
 export async function registerWsgTools() {
+  const status = document.querySelector('#webmcp-status');
 
-  if (!navigator.modelContext) {
+  const modelContext = navigator.modelContext || document.modelContext;
+
+  if (!modelContext) {
     console.log('WebMCP not available');
+
+    if (status) {
+      status.textContent = 'WebMCP not available in this browser.';
+    }
+
     return;
   }
 
-  await navigator.modelContext.registerTool({
+  if (status) {
+    status.textContent = 'WebMCP available. Registering WSG tools...';
+  }
+
+  console.log('WebMCP available');
+
+  await modelContext.registerTool({
     name: 'wsg.search',
-    description: 'Search Web Sustainability Guidelines',
+    description: 'Search Web Sustainability Guidelines.',
     inputSchema: {
       type: 'object',
       properties: {
         query: { type: 'string' }
-      }
+      },
+      required: ['query']
     },
     readOnlyHint: true,
     execute: async ({ query }) => {
@@ -28,14 +43,17 @@ export async function registerWsgTools() {
     }
   });
 
-  await navigator.modelContext.registerTool({
+  console.log('Registered wsg.search');
+
+  await modelContext.registerTool({
     name: 'wsg.list_by_tag',
-    description: 'List WSG guidelines by tag',
+    description: 'List WSG guidelines by tag.',
     inputSchema: {
       type: 'object',
       properties: {
         tag: { type: 'string' }
-      }
+      },
+      required: ['tag']
     },
     readOnlyHint: true,
     execute: async ({ tag }) => {
@@ -43,9 +61,11 @@ export async function registerWsgTools() {
     }
   });
 
-  await navigator.modelContext.registerTool({
+  console.log('Registered wsg.list_by_tag');
+
+  await modelContext.registerTool({
     name: 'wsg.stats',
-    description: 'Show WSG statistics',
+    description: 'Show WSG data statistics.',
     inputSchema: {
       type: 'object',
       properties: {}
@@ -55,4 +75,10 @@ export async function registerWsgTools() {
       return await getStats();
     }
   });
+
+  console.log('Registered wsg.stats');
+
+  if (status) {
+    status.textContent = 'WebMCP available. WSG tools registered.';
+  }
 }
