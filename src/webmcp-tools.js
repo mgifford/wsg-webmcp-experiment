@@ -7,7 +7,8 @@ import {
   getStats,
   suggestAuditQuestions,
   suggestProcurementRequirements,
-  generateConformanceClaimDraft
+  generateConformanceClaimDraft,
+  generateReviewChecklist
 } from './wsg-data.js';
 
 export async function registerWsgTools() {
@@ -22,22 +23,6 @@ export async function registerWsgTools() {
     console.log('WebMCP not available');
     return;
   }
-
-  await registerTool(modelContext, {
-    name: 'wsg.search',
-    description: 'Search Web Sustainability Guidelines by keyword, category, or tag.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        query: { type: 'string' },
-        category: { type: 'string' },
-        tag: { type: 'string' },
-        limit: { type: 'number' }
-      }
-    },
-    readOnlyHint: true,
-    execute: async (input) => searchGuidelines(input)
-  });
 
   await registerTool(modelContext, {
     name: 'wsg.get_guideline',
@@ -152,6 +137,21 @@ export async function registerWsgTools() {
     execute: async (input) => generateConformanceClaimDraft(input)
   });
 
+await registerTool(modelContext, {
+  name: 'wsg.generate_review_checklist',
+  description: 'Generate a review checklist from WSG guidance.',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      topic: { type: 'string' },
+      role: { type: 'string' },
+      limit: { type: 'number' }
+    }
+  },
+  readOnlyHint: true,
+  execute: async (input) => generateReviewChecklist(input)
+});
+  
   await registerTool(modelContext, {
     name: 'wsg.stats',
     description: 'Show WSG data statistics.',
@@ -197,20 +197,3 @@ function getUnavailableMessage() {
 
   return 'WebMCP not available in this browser. The page still works as a normal JavaScript demo.';
 }
-
-await registerTool(modelContext, {
-  name: 'wsg.generate_review_checklist',
-  description:
-    'Generate a review checklist from WSG guidance.',
-  inputSchema: {
-    type: 'object',
-    properties: {
-      topic: { type: 'string' },
-      role: { type: 'string' },
-      limit: { type: 'number' }
-    }
-  },
-  readOnlyHint: true,
-  execute: async (input) =>
-    generateReviewChecklist(input)
-});
