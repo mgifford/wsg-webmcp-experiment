@@ -197,3 +197,20 @@ function getUnavailableMessage() {
 
   return 'WebMCP not available in this browser. The page still works as a normal JavaScript demo.';
 }
+
+await registerTool(modelContext, {
+  name: 'wsg.generate_review_checklist',
+  description:
+    'Generate a review checklist from WSG guidance.',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      topic: { type: 'string' },
+      role: { type: 'string' },
+      limit: { type: 'number' }
+    }
+  },
+  readOnlyHint: true,
+  execute: async (input) =>
+    generateReviewChecklist(input)
+});
