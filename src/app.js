@@ -109,20 +109,19 @@ if (testWebMcpStatsButton) {
   });
 }
 
-const checklistButton =
-  document.querySelector('#generate-checklist');
+const checklistButton = document.querySelector('#generate-checklist');
 
-checklistButton?.addEventListener(
-  'click',
-  async () => {
+checklistButton?.addEventListener('click', async () => {
+  try {
+    const result = await generateReviewChecklist({
+      topic: 'accessibility',
+      role: 'procurement',
+      limit: 10
+    });
 
-    const result =
-      await generateReviewChecklist({
-        topic: 'accessibility',
-        role: 'procurement'
-      });
-
-    output.textContent =
-      JSON.stringify(result, null, 2);
+    output.textContent = JSON.stringify(result, null, 2);
   }
-);
+  catch (error) {
+    output.textContent = error.message;
+  }
+});
