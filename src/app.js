@@ -107,3 +107,21 @@ if (testWebMcpStatsButton) {
     }
   });
 }
+
+const checklistButton =
+  document.querySelector('#generate-checklist');
+
+checklistButton?.addEventListener(
+  'click',
+  async () => {
+
+    const result =
+      await generateReviewChecklist({
+        topic: 'accessibility',
+        role: 'procurement'
+      });
+
+    output.textContent =
+      JSON.stringify(result, null, 2);
+  }
+);
