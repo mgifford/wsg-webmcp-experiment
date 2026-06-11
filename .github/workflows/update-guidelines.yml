@@ -57,13 +57,21 @@ jobs:
           changed=false
 
           for file in guidelines.json star.json; do
-            if [ ! -f "data/$file" ]; then
-              mv "data/$file.new" "data/$file"
+            new_file="data/$file.new"
+            current_file="data/$file"
+
+            if [ ! -f "$new_file" ]; then
+              echo "Missing downloaded file: $new_file"
+              exit 1
+            fi
+
+            if [ ! -f "$current_file" ]; then
+              mv "$new_file" "$current_file"
               changed=true
-            elif cmp -s "data/$file" "data/$file.new"; then
-              rm "data/$file.new"
+            elif cmp -s "$current_file" "$new_file"; then
+              rm "$new_file"
             else
-              mv "data/$file.new" "data/$file"
+              mv "$new_file" "$current_file"
               changed=true
             fi
           done
