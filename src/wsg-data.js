@@ -388,3 +388,44 @@ function slugify(value) {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
 }
+
+export async function generateReviewChecklist({
+  topic = '',
+  role = '',
+  limit = 10
+} = {}) {
+
+  const guidelines = await searchGuidelines({
+    query: topic,
+    limit
+  });
+
+  const items = [];
+
+  for (const guideline of guidelines) {
+    for (const criterion of guideline.criteria || []) {
+
+      items.push({
+        question: `Has the team ${criterion.description
+          .replace(/\.$/, '')
+          .toLowerCase()}?`,
+        guidelineId: guideline.id,
+        guideline: guideline.guideline,
+        criterion: criterion.title,
+        sourceUrl: guideline.url
+      });
+
+      if (items.length >= limit) {
+        break;
+      }
+    }
+  }
+
+  return {
+    status:
+      'Draft checklist only. Human review required.',
+    topic,
+    role,
+    items
+  };
+}
