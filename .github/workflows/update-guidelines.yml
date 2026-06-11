@@ -20,16 +20,23 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Download latest guidelines.json
+      - name: Download latest WSG JSON files
         run: |
           mkdir -p data
+
           curl -fsSL \
             https://raw.githubusercontent.com/w3c/sustainableweb-wsg/main/guidelines.json \
             -o data/guidelines.json.new
 
+          curl -fsSL \
+            https://raw.githubusercontent.com/w3c/sustainableweb-wsg/main/star.json \
+            -o data/star.json.new
+            
+
       - name: Validate JSON
         run: |
           jq empty data/guidelines.json.new
+          jq empty data/star.json.new
 
       - name: Replace file if changed
         run: |
@@ -44,11 +51,31 @@ jobs:
             echo "changed=true" >> "$GITHUB_ENV"
           fi
 
+
+      - name: Replace files if changed
+        run: |
+          changed=false
+
+          for file in guidelines.json star.json; do
+            if [ ! -f "data/$file" ]; then
+              mv "data/$file.new" "data/$file"
+              changed=true
+            elif cmp -s "data/$file" "data/$file.new"; then
+              rm "data/$file.new"
+            else
+              mv "data/$file.new" "data/$file"
+              changed=true
+            fi
+          done
+
+          echo "changed=$changed" >> "$GITHUB_ENV"
+
       - name: Commit and push changes
         if: env.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/guidelines.json
-          git diff --cached --quiet || git commit -m "Update WSG guidelines data"
+          git add data/guidelines.json data/star.json
+          git diff --cached --quiet || git commit -m "Update WSG data files"
           git push
+          
