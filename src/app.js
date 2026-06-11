@@ -1,7 +1,8 @@
 import {
   getStats,
   searchGuidelines,
-  listTags
+  listTags,
+  generateReviewChecklist
 } from './wsg-data.js';
 
 import { registerWsgTools } from './webmcp-tools.js';
