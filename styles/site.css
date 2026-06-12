@@ -449,6 +449,10 @@ pre code {
   gap: 0.45rem;
 }
 
+.checklist-item__resources[hidden] {
+  display: none !important;
+}
+
 .checklist-item__group-label {
   margin: 0;
   font-size: 0.95rem;
