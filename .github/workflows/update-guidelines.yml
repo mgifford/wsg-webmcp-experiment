@@ -23,11 +23,9 @@ jobs:
       - name: Download latest WSG JSON files
         run: |
           mkdir -p data
-
           curl -fsSL \
             https://raw.githubusercontent.com/w3c/sustainableweb-wsg/main/guidelines.json \
             -o data/guidelines.json.new
-
           curl -fsSL \
             https://raw.githubusercontent.com/w3c/sustainableweb-wsg/main/star.json \
             -o data/star.json.new
