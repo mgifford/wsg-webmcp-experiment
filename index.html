@@ -52,41 +52,163 @@
       </div>
     </section>
 
-    <div class="panel-grid panel-grid--two">
-      <section class="panel">
-        <div class="panel__inner stack">
-          <h2>Search WSG</h2>
+    <div class="panel-grid panel-grid--two panel-grid--main">
+      <div class="stack">
+        <section class="panel">
+          <div class="panel__inner stack">
+            <h2>Search WSG</h2>
 
-          <p>
-            Search the guideline data by keyword, category, or tag. The current browser demo
-            uses the same data source as the WebMCP tools.
-          </p>
+            <p>
+              Search the guideline data by keyword, category, or tag. The current browser demo
+              uses the same data source as the WebMCP tools.
+            </p>
 
-          <div class="field-row field-row--search">
-            <div>
-              <label for="search-query">Search term</label>
-              <input id="search-query" type="search" value="accessibility">
+            <div class="field-row field-row--search">
+              <div>
+                <label for="search-query">Search term</label>
+                <input id="search-query" type="search" value="accessibility">
+              </div>
+
+              <button id="search-wsg" type="button">Search</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel__inner stack">
+            <h2>Stats</h2>
+
+            <p>
+              Load a small summary of the indexed data to confirm the data layer is working.
+            </p>
+
+            <div class="button-row">
+              <button id="load-stats" type="button">Load WSG stats</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel__inner stack">
+            <h2>Find relevant WSG guidance</h2>
+
+            <p>
+              Describe a design or product decision in plain language. The demo will match the
+              statement against WSG guidance and related STAR text.
+            </p>
+
+            <div class="stack">
+              <label for="guidance-description">Design or product decision</label>
+              <textarea id="guidance-description" rows="5">We want to add autoplaying video to the homepage hero area.</textarea>
             </div>
 
-            <button id="search-wsg" type="button">Search</button>
+            <div class="button-row">
+              <button id="find-relevant-guidance" type="button">Find relevant WSG guidance</button>
+              <button id="review-design-decision" type="button" class="secondary">Review design decision</button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="panel">
+        <section class="panel">
+          <div class="panel__inner stack">
+            <h2>Review procurement requirement</h2>
+
+            <p>
+              Describe a contract requirement in plain language. The demo will flag likely concerns
+              and suggest draft language using SHOULD.
+            </p>
+
+            <div class="stack">
+              <label for="procurement-requirement">Procurement requirement</label>
+              <textarea id="procurement-requirement" rows="5">The supplier shall provide monthly analytics reports.</textarea>
+            </div>
+
+            <div class="button-row">
+              <button id="review-procurement-requirement" type="button">Review procurement requirement</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel__inner stack">
+            <h2>Generate review checklist</h2>
+
+            <p>
+              This demo can draft checklist items from WSG guidance. The output still needs human
+              review before use.
+            </p>
+
+            <div class="button-row">
+              <button id="generate-checklist" type="button">Accessibility checklist</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel__inner stack">
+            <h2>STAR checks</h2>
+
+            <p>
+              STAR provides testing and reporting techniques that can be linked back to WSG
+              guidance.
+            </p>
+
+            <div class="button-row">
+              <button id="load-star-stats" type="button">Load STAR stats</button>
+              <button id="validate-star-alignment" type="button" class="secondary">Check STAR / WSG alignment</button>
+              <button id="generate-checklist-with-tests" type="button">Accessibility checklist with STAR tests</button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="panel panel--output">
         <div class="panel__inner stack">
-          <h2>Stats</h2>
+          <h2>Output</h2>
 
           <p>
-            Load a small summary of the indexed data to confirm the data layer is working.
+            Results from searches and generators appear here.
           </p>
 
-          <div class="button-row">
-            <button id="load-stats" type="button">Load WSG stats</button>
-          </div>
+          <div id="output" class="results" role="status" aria-live="polite" aria-atomic="true"></div>
+
+          <p class="lede">
+            The output area is a live region so screen reader users hear updates when the page
+            changes the content programmatically.
+          </p>
         </div>
       </section>
     </div>
+
+    <section class="panel">
+      <div class="panel__inner stack">
+        <h2>Registered WebMCP tools</h2>
+
+        <p>
+          The browser can expose these functions to compatible WebMCP agents.
+        </p>
+
+        <ul class="tool-list">
+          <li><span class="tool-name">wsg.search</span>Search WSG guidance by keyword, category, or tag.</li>
+          <li><span class="tool-name">wsg.get_guideline</span>Get a full WSG guideline by ID or exact title.</li>
+          <li><span class="tool-name">wsg.get_criterion</span>Get a WSG success criterion by generated ID or exact title.</li>
+          <li><span class="tool-name">wsg.list_by_tag</span>List guidance connected to a WSG tag.</li>
+          <li><span class="tool-name">wsg.find_resources</span>Find supporting WSG resources.</li>
+          <li><span class="tool-name">wsg.find_relevant_guidance</span>Find relevant WSG guidance for a design or product decision.</li>
+          <li><span class="tool-name">wsg.review_design_decision</span>Draft a design decision review from WSG and STAR guidance.</li>
+          <li><span class="tool-name">wsg.review_procurement_requirement</span>Draft a procurement requirement review from WSG guidance.</li>
+          <li><span class="tool-name">wsg.suggest_audit_questions</span>Generate draft audit questions.</li>
+          <li><span class="tool-name">wsg.suggest_procurement_requirements</span>Generate draft procurement requirements.</li>
+          <li><span class="tool-name">wsg.generate_conformance_claim_draft</span>Generate a draft conformance claim.</li>
+          <li><span class="tool-name">wsg.generate_review_checklist</span>Generate a draft review checklist.</li>
+          <li><span class="tool-name">wsg.stats</span>Show WSG data statistics.</li>
+          <li><span class="tool-name">wsg.star_stats</span>Show STAR data statistics.</li>
+          <li><span class="tool-name">wsg.validate_star_alignment</span>Check whether STAR links still match WSG anchors.</li>
+          <li><span class="tool-name">wsg.find_star_techniques</span>Find STAR techniques by query or guideline.</li>
+          <li><span class="tool-name">wsg.generate_review_checklist_with_tests</span>Generate checklist items with STAR tests.</li>
+        </ul>
+      </div>
+    </section>
 
     <section class="panel">
       <div class="panel__inner stack">
@@ -105,84 +227,6 @@
         <pre id="webmcp-output" class="results" role="status" aria-live="polite" aria-atomic="true"></pre>
       </div>
     </section>
-
-    <section class="panel">
-      <div class="panel__inner stack">
-        <h2>Generate review checklist</h2>
-
-        <p>
-          This demo can draft checklist items from WSG guidance. The output still needs human
-          review before use.
-        </p>
-
-        <div class="button-row">
-          <button id="generate-checklist" type="button">Accessibility checklist</button>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="panel__inner stack">
-        <h2>STAR checks</h2>
-
-        <p>
-          STAR provides testing and reporting techniques that can be linked back to WSG
-          guidance.
-        </p>
-
-        <div class="button-row">
-          <button id="load-star-stats" type="button">Load STAR stats</button>
-          <button id="validate-star-alignment" type="button" class="secondary">Check STAR / WSG alignment</button>
-          <button id="generate-checklist-with-tests" type="button">Accessibility checklist with STAR tests</button>
-        </div>
-      </div>
-    </section>
-
-    <div class="panel-grid panel-grid--two">
-      <section class="panel">
-        <div class="panel__inner stack">
-          <h2>Registered WebMCP tools</h2>
-
-          <p>
-            The browser can expose these functions to compatible WebMCP agents.
-          </p>
-
-          <ul class="tool-list">
-            <li><span class="tool-name">wsg.search</span>Search WSG guidance by keyword, category, or tag.</li>
-            <li><span class="tool-name">wsg.get_guideline</span>Get a full WSG guideline by ID or exact title.</li>
-            <li><span class="tool-name">wsg.get_criterion</span>Get a WSG success criterion by generated ID or exact title.</li>
-            <li><span class="tool-name">wsg.list_by_tag</span>List guidance connected to a WSG tag.</li>
-            <li><span class="tool-name">wsg.find_resources</span>Find supporting WSG resources.</li>
-            <li><span class="tool-name">wsg.suggest_audit_questions</span>Generate draft audit questions.</li>
-            <li><span class="tool-name">wsg.suggest_procurement_requirements</span>Generate draft procurement requirements.</li>
-            <li><span class="tool-name">wsg.generate_conformance_claim_draft</span>Generate a draft conformance claim.</li>
-            <li><span class="tool-name">wsg.generate_review_checklist</span>Generate a draft review checklist.</li>
-            <li><span class="tool-name">wsg.stats</span>Show WSG data statistics.</li>
-            <li><span class="tool-name">wsg.star_stats</span>Show STAR data statistics.</li>
-            <li><span class="tool-name">wsg.validate_star_alignment</span>Check whether STAR links still match WSG anchors.</li>
-            <li><span class="tool-name">wsg.find_star_techniques</span>Find STAR techniques by query or guideline.</li>
-            <li><span class="tool-name">wsg.generate_review_checklist_with_tests</span>Generate checklist items with STAR tests.</li>
-          </ul>
-        </div>
-      </section>
-
-      <section class="panel">
-        <div class="panel__inner stack">
-          <h2>Output</h2>
-
-          <p>
-            Results from searches and generators appear here.
-          </p>
-
-          <pre id="output" class="results" role="status" aria-live="polite" aria-atomic="true"></pre>
-
-          <p class="lede">
-            The output area is a live region so screen reader users hear updates when the page
-            changes the content programmatically.
-          </p>
-        </div>
-      </section>
-    </div>
   </main>
 
   <footer class="footer">

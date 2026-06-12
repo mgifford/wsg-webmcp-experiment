@@ -9,6 +9,9 @@ import {
   suggestProcurementRequirements,
   generateConformanceClaimDraft,
   generateReviewChecklist,
+  findRelevantGuidance,
+  reviewDesignDecision,
+  reviewProcurementRequirement,
   getStarStats,
   validateStarAlignment,
   findStarTechniques,
@@ -101,6 +104,51 @@ export async function registerWsgTools() {
     },
     readOnlyHint: true,
     execute: async (input) => findResources(input)
+  });
+
+  await registerTool(modelContext, {
+    name: 'wsg.find_relevant_guidance',
+    description: 'Find relevant WSG guidance for a design or product decision.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        description: { type: 'string' },
+        limit: { type: 'number' }
+      },
+      required: ['description']
+    },
+    readOnlyHint: true,
+    execute: async (input) => findRelevantGuidance(input)
+  });
+
+  await registerTool(modelContext, {
+    name: 'wsg.review_design_decision',
+    description: 'Draft a review of a design decision using WSG guidance and STAR techniques.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        description: { type: 'string' },
+        limit: { type: 'number' }
+      },
+      required: ['description']
+    },
+    readOnlyHint: true,
+    execute: async (input) => reviewDesignDecision(input)
+  });
+
+  await registerTool(modelContext, {
+    name: 'wsg.review_procurement_requirement',
+    description: 'Draft a review of a procurement requirement using WSG guidance.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        requirement: { type: 'string' },
+        limit: { type: 'number' }
+      },
+      required: ['requirement']
+    },
+    readOnlyHint: true,
+    execute: async (input) => reviewProcurementRequirement(input)
   });
 
   await registerTool(modelContext, {
