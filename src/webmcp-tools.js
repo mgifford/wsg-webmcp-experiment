@@ -296,7 +296,6 @@ export async function registerWsgTools() {
 // Keep registration isolated so the tool definitions stay easy to scan and maintain.
 async function registerTool(modelContext, toolDefinition) {
   await modelContext.registerTool(toolDefinition);
-  console.log(`Registered ${toolDefinition.name}`);
 }
 
 // The page uses browser detection only for messaging, not for feature gating.

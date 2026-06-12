@@ -158,6 +158,11 @@ function renderChecklistResult(result) {
   summary.textContent = buildTaskLayerSummary(result);
   container.append(summary);
 
+  const resourcesToggle = buildChecklistResourcesToggle(result.items || []);
+  if (resourcesToggle) {
+    container.append(resourcesToggle);
+  }
+
   const checklistSection = document.createElement('section');
   checklistSection.className = 'stack';
 
@@ -262,6 +267,44 @@ function buildChecklistItem(item, index) {
   return listItem;
 }
 
+function buildChecklistResourcesToggle(items) {
+  const itemsWithResources = items.filter((item) => item.resources && item.resources.length);
+
+  if (!itemsWithResources.length) {
+    return null;
+  }
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'checklist-toolbar';
+
+  const label = document.createElement('p');
+  label.className = 'checklist-toolbar__label';
+  label.textContent = `Supporting resources are hidden for ${itemsWithResources.length} checklist items.`;
+  wrapper.append(label);
+
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'checklist-toolbar__button';
+  button.setAttribute('aria-expanded', 'false');
+  button.textContent = 'Show supporting resources';
+
+  button.addEventListener('click', () => {
+    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+    const nextExpanded = !isExpanded;
+    const resourceGroups = document.querySelectorAll('.checklist-item__resources');
+
+    for (const group of resourceGroups) {
+      group.hidden = !nextExpanded;
+    }
+
+    button.setAttribute('aria-expanded', String(nextExpanded));
+    button.textContent = nextExpanded ? 'Hide supporting resources' : 'Show supporting resources';
+  });
+
+  wrapper.append(button);
+  return wrapper;
+}
+
 function buildChecklistMeta(item) {
   const pieces = [];
 
@@ -297,31 +340,16 @@ function buildChecklistResources(item) {
   }
 
   const wrapper = document.createElement('div');
-  wrapper.className = 'checklist-item__group';
-  const resourcesId = `checklist-resources-${item.guidelineId || 'item'}-${item.criterion || 'criterion'}`.replace(/[^a-zA-Z0-9_-]/g, '-');
-
-  const headingRow = document.createElement('div');
-  headingRow.className = 'checklist-item__group-row';
+  wrapper.className = 'checklist-item__group checklist-item__resources';
+  wrapper.hidden = true;
 
   const heading = document.createElement('p');
   heading.className = 'checklist-item__group-label';
   heading.textContent = `Supporting resources (${item.resources.length})`;
-  headingRow.append(heading);
-
-  const toggle = document.createElement('button');
-  toggle.type = 'button';
-  toggle.className = 'checklist-item__toggle';
-  toggle.setAttribute('aria-expanded', 'false');
-  toggle.setAttribute('aria-controls', resourcesId);
-  toggle.textContent = 'Show supporting resources';
-  headingRow.append(toggle);
-
-  wrapper.append(headingRow);
+  wrapper.append(heading);
 
   const list = document.createElement('ul');
   list.className = 'checklist-item__sublist';
-  list.id = resourcesId;
-  list.hidden = true;
 
   for (const resource of item.resources) {
     const resourceItem = document.createElement('li');
@@ -333,13 +361,6 @@ function buildChecklistResources(item) {
   }
 
   wrapper.append(list);
-
-  toggle.addEventListener('click', () => {
-    const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!isExpanded));
-    toggle.textContent = isExpanded ? 'Show supporting resources' : 'Hide supporting resources';
-    list.hidden = isExpanded;
-  });
 
   return wrapper;
 }
