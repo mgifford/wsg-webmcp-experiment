@@ -476,6 +476,55 @@ pre code {
   font-weight: 700;
 }
 
+.webmcp-capabilities {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(180deg, rgba(31, 95, 139, 0.08), rgba(31, 95, 139, 0.03)),
+    var(--surface-strong);
+}
+
+.webmcp-capabilities__badge {
+  display: inline-flex;
+  width: fit-content;
+  margin: 0;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--accent-strong);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.webmcp-capabilities__title {
+  margin: 0;
+  color: var(--heading);
+  font-family: var(--heading-font);
+  font-size: 1.15rem;
+  line-height: 1.25;
+}
+
+.webmcp-capabilities__list {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--text);
+}
+
+.webmcp-capabilities__list li + li {
+  margin-top: 0.35rem;
+}
+
+.webmcp-capabilities__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
 .panel-grid {
   display: grid;
   gap: 1rem;

@@ -26,6 +26,7 @@ registerWsgTools().catch((error) => {
 
 const output = document.querySelector('#output');
 const button = document.querySelector('#load-stats');
+const webMcpCapabilities = document.querySelector('#webmcp-capabilities');
 
 function bindClickHandler(element, handler, description) {
   if (!element) {
@@ -35,6 +36,74 @@ function bindClickHandler(element, handler, description) {
 
   element.addEventListener('click', handler);
 }
+
+function renderWebMcpCapabilities() {
+  if (!webMcpCapabilities) {
+    return;
+  }
+
+  const modelContext = navigator.modelContext || document.modelContext;
+  const testing = navigator.modelContextTesting || null;
+  const container = document.createElement('div');
+  container.className = 'stack';
+
+  const badge = document.createElement('p');
+  badge.className = 'webmcp-capabilities__badge';
+  badge.textContent = modelContext ? 'WebMCP enabled' : 'WebMCP unavailable';
+  container.append(badge);
+
+  const title = document.createElement('h3');
+  title.className = 'webmcp-capabilities__title';
+  title.textContent = modelContext
+    ? 'What WebMCP adds in this browser'
+    : 'What WebMCP would add in a supported browser';
+  container.append(title);
+
+  const list = document.createElement('ul');
+  list.className = 'webmcp-capabilities__list';
+
+  const items = modelContext
+    ? [
+        'Compatible agents can discover the registered WSG tools on this page.',
+        'The status banner above changes when the browser exposes WebMCP registration.',
+        testing && typeof testing.listTools === 'function'
+          ? 'The diagnostics section can list the exposed tools in supported Chromium builds.'
+          : 'The diagnostics section explains how to inspect the tool registry in the browser developer tools.'
+      ]
+    : [
+        'The page still works as a normal JavaScript demo.',
+        'WebMCP tools are not exposed to compatible agents in this browser.',
+        'Firefox and other unsupported browsers keep the same search, review, and checklist features.'
+      ];
+
+  for (const itemText of items) {
+    const item = document.createElement('li');
+    item.textContent = itemText;
+    list.append(item);
+  }
+
+  container.append(list);
+
+  const actions = document.createElement('div');
+  actions.className = 'webmcp-capabilities__actions';
+
+  const toolsLink = document.createElement('a');
+  toolsLink.className = 'button secondary';
+  toolsLink.href = '#registered-webmcp-tools';
+  toolsLink.textContent = 'View registered tools';
+  actions.append(toolsLink);
+
+  const diagnosticsLink = document.createElement('a');
+  diagnosticsLink.className = 'button secondary';
+  diagnosticsLink.href = '#webmcp-diagnostics';
+  diagnosticsLink.textContent = 'Open diagnostics';
+  actions.append(diagnosticsLink);
+
+  container.append(actions);
+  webMcpCapabilities.replaceChildren(container);
+}
+
+renderWebMcpCapabilities();
 
 function renderTaskLayerResult(result) {
   if (!output) {
