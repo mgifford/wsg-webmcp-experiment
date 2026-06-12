@@ -518,12 +518,20 @@ function formatKeywordList(terms) {
 export async function generateReviewChecklist({
   topic = '',
   role = '',
+  category = '',
   limit = 10
 } = {}) {
-  const guidelines = await searchGuidelines({
-    query: topic,
-    limit
-  });
+  const guidelines = await searchGuidelines(
+    category
+      ? {
+          category,
+          limit
+        }
+      : {
+          query: topic,
+          limit
+        }
+  );
 
   const items = [];
 
@@ -561,6 +569,7 @@ export async function generateReviewChecklist({
       'Draft checklist only. Human review required.',
     topic,
     role,
+    category,
     items
   };
 }
@@ -712,11 +721,22 @@ export async function generateReviewChecklistWithTests({
   topic = '',
   role = '',
   guideline = '',
+  category = '',
   limit = 10
 } = {}) {
   const guidelines = guideline
     ? [await getGuideline(guideline)].filter(Boolean)
-    : await searchGuidelines({ query: topic, limit });
+    : await searchGuidelines(
+        category
+          ? {
+              category,
+              limit
+            }
+          : {
+              query: topic,
+              limit
+            }
+      );
 
   const items = [];
 
@@ -759,6 +779,7 @@ export async function generateReviewChecklistWithTests({
     topic,
     role,
     guideline,
+    category,
     items
   };
 }

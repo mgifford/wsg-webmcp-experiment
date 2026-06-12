@@ -298,14 +298,30 @@ function buildChecklistResources(item) {
 
   const wrapper = document.createElement('div');
   wrapper.className = 'checklist-item__group';
+  const resourcesId = `checklist-resources-${item.guidelineId || 'item'}-${item.criterion || 'criterion'}`.replace(/[^a-zA-Z0-9_-]/g, '-');
+
+  const headingRow = document.createElement('div');
+  headingRow.className = 'checklist-item__group-row';
 
   const heading = document.createElement('p');
   heading.className = 'checklist-item__group-label';
-  heading.textContent = 'Supporting resources';
-  wrapper.append(heading);
+  heading.textContent = `Supporting resources (${item.resources.length})`;
+  headingRow.append(heading);
+
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'checklist-item__toggle';
+  toggle.setAttribute('aria-expanded', 'false');
+  toggle.setAttribute('aria-controls', resourcesId);
+  toggle.textContent = 'Show supporting resources';
+  headingRow.append(toggle);
+
+  wrapper.append(headingRow);
 
   const list = document.createElement('ul');
   list.className = 'checklist-item__sublist';
+  list.id = resourcesId;
+  list.hidden = true;
 
   for (const resource of item.resources) {
     const resourceItem = document.createElement('li');
@@ -317,6 +333,14 @@ function buildChecklistResources(item) {
   }
 
   wrapper.append(list);
+
+  toggle.addEventListener('click', () => {
+    const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!isExpanded));
+    toggle.textContent = isExpanded ? 'Show supporting resources' : 'Hide supporting resources';
+    list.hidden = isExpanded;
+  });
+
   return wrapper;
 }
 
@@ -403,7 +427,10 @@ function buildSourceLinkList(sourceLinks) {
 
 function buildTaskLayerSummary(result) {
   if (Array.isArray(result.items)) {
-    return `${result.status} This draft includes ${result.items.length} checklist items.`;
+    const scope = result.category || result.topic;
+    const scopeText = scope ? ` for ${scope}` : '';
+
+    return `${result.status} This draft includes ${result.items.length} checklist items${scopeText}.`;
   }
 
   if (Array.isArray(result.matches)) {
@@ -664,22 +691,53 @@ if (testWebMcpStatsButton) {
 }
 
 const checklistButton = document.querySelector('#generate-checklist');
+const checklistUxButton = document.querySelector('#generate-checklist-ux');
+const checklistWebDevelopmentButton = document.querySelector('#generate-checklist-web-development');
+const checklistHostingButton = document.querySelector('#generate-checklist-hosting');
+const checklistBusinessButton = document.querySelector('#generate-checklist-business');
+
+function bindChecklistPresetButton(element, options, description) {
+  bindClickHandler(element, async () => {
+    try {
+      const result = await generateReviewChecklist(options);
+      renderTaskLayerResult(result);
+    }
+    catch (error) {
+      output.textContent = error.message;
+    }
+  }, description);
+}
 
 // The checklist generators turn guideline text into draft review prompts for humans to refine.
-bindClickHandler(checklistButton, async () => {
-  try {
-    const result = await generateReviewChecklist({
-      topic: 'accessibility',
-      role: 'procurement',
-      limit: 10
-    });
-
-    renderTaskLayerResult(result);
-  }
-  catch (error) {
-    output.textContent = error.message;
-  }
+bindChecklistPresetButton(checklistButton, {
+  topic: 'accessibility',
+  role: 'procurement',
+  limit: 10
 }, '#generate-checklist');
+
+bindChecklistPresetButton(checklistUxButton, {
+  category: 'UX Design',
+  role: 'ux design',
+  limit: 10
+}, '#generate-checklist-ux');
+
+bindChecklistPresetButton(checklistWebDevelopmentButton, {
+  category: 'Web Development',
+  role: 'web development',
+  limit: 10
+}, '#generate-checklist-web-development');
+
+bindChecklistPresetButton(checklistHostingButton, {
+  category: 'Hosting and Infrastructure',
+  role: 'hosting and infrastructure',
+  limit: 10
+}, '#generate-checklist-hosting');
+
+bindChecklistPresetButton(checklistBusinessButton, {
+  category: 'Business Strategy And Product Management',
+  role: 'business and project management',
+  limit: 10
+}, '#generate-checklist-business');
 
 const starStatsButton = document.querySelector('#load-star-stats');
 const starAlignmentButton = document.querySelector('#validate-star-alignment');

@@ -253,6 +253,7 @@ export async function registerWsgTools() {
         topic: { type: 'string' },
         role: { type: 'string' },
         guideline: { type: 'string' },
+        category: { type: 'string' },
         limit: { type: 'number' }
       }
     },
@@ -268,6 +269,7 @@ export async function registerWsgTools() {
       properties: {
         topic: { type: 'string' },
         role: { type: 'string' },
+        category: { type: 'string' },
         limit: { type: 'number' }
       }
     },
