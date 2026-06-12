@@ -2,7 +2,10 @@ import {
   getStats,
   searchGuidelines,
   listTags,
-  generateReviewChecklist
+  generateReviewChecklist,
+  generateReviewChecklistWithTests,
+  validateStarAlignment,
+  getStarStats
 } from './wsg-data.js';
 
 import { registerWsgTools } from './webmcp-tools.js';
@@ -114,6 +117,45 @@ const checklistButton = document.querySelector('#generate-checklist');
 checklistButton?.addEventListener('click', async () => {
   try {
     const result = await generateReviewChecklist({
+      topic: 'accessibility',
+      role: 'procurement',
+      limit: 10
+    });
+
+    output.textContent = JSON.stringify(result, null, 2);
+  }
+  catch (error) {
+    output.textContent = error.message;
+  }
+});
+
+const starStatsButton = document.querySelector('#load-star-stats');
+const starAlignmentButton = document.querySelector('#validate-star-alignment');
+const checklistWithTestsButton = document.querySelector('#generate-checklist-with-tests');
+
+starStatsButton?.addEventListener('click', async () => {
+  try {
+    const result = await getStarStats();
+    output.textContent = JSON.stringify(result, null, 2);
+  }
+  catch (error) {
+    output.textContent = error.message;
+  }
+});
+
+starAlignmentButton?.addEventListener('click', async () => {
+  try {
+    const result = await validateStarAlignment();
+    output.textContent = JSON.stringify(result, null, 2);
+  }
+  catch (error) {
+    output.textContent = error.message;
+  }
+});
+
+checklistWithTestsButton?.addEventListener('click', async () => {
+  try {
+    const result = await generateReviewChecklistWithTests({
       topic: 'accessibility',
       role: 'procurement',
       limit: 10
