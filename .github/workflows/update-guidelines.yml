@@ -77,6 +77,7 @@ jobs:
           done
 
           echo "changed=$changed" >> "$GITHUB_ENV"
+          
 
       - name: Commit and push changes
         if: env.changed == 'true'
