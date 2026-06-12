@@ -141,6 +141,61 @@ export async function registerWsgTools() {
     execute: async (input) => generateConformanceClaimDraft(input)
   });
 
+
+await registerTool(modelContext, {
+  name: 'wsg.star_stats',
+  description: 'Show STAR data statistics.',
+  inputSchema: {
+    type: 'object',
+    properties: {}
+  },
+  readOnlyHint: true,
+  execute: async () => getStarStats()
+});
+
+await registerTool(modelContext, {
+  name: 'wsg.validate_star_alignment',
+  description: 'Check whether STAR technique links still match WSG guideline anchors.',
+  inputSchema: {
+    type: 'object',
+    properties: {}
+  },
+  readOnlyHint: true,
+  execute: async () => validateStarAlignment()
+});
+
+await registerTool(modelContext, {
+  name: 'wsg.find_star_techniques',
+  description: 'Find STAR techniques by query or WSG guideline ID.',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      query: { type: 'string' },
+      guideline: { type: 'string' },
+      limit: { type: 'number' }
+    }
+  },
+  readOnlyHint: true,
+  execute: async (input) => findStarTechniques(input)
+});
+
+await registerTool(modelContext, {
+  name: 'wsg.generate_review_checklist_with_tests',
+  description: 'Generate a WSG review checklist with related STAR test techniques.',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      topic: { type: 'string' },
+      role: { type: 'string' },
+      guideline: { type: 'string' },
+      limit: { type: 'number' }
+    }
+  },
+  readOnlyHint: true,
+  execute: async (input) => generateReviewChecklistWithTests(input)
+});
+
+  
 await registerTool(modelContext, {
   name: 'wsg.generate_review_checklist',
   description: 'Generate a review checklist from WSG guidance.',
