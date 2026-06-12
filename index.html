@@ -54,6 +54,12 @@
         <li><code>wsg.suggest_procurement_requirements</code>: generate draft procurement requirements.</li>
         <li><code>wsg.generate_conformance_claim_draft</code>: generate a draft conformance claim.</li>
         <li><code>wsg.stats</code>: show WSG data statistics.</li>
+
+<li><code>wsg.star_stats</code>: show STAR data statistics.</li>
+<li><code>wsg.validate_star_alignment</code>: check whether STAR links still match WSG anchors.</li>
+<li><code>wsg.find_star_techniques</code>: find STAR techniques by query or guideline.</li>
+<li><code>wsg.generate_review_checklist_with_tests</code>: generate checklist items with STAR tests.</li>
+        
       </ul>
     </section>
 
@@ -105,6 +111,28 @@
 <button id="generate-checklist">
   Accessibility Checklist
 </button>
+
+
+<section>
+  <h2>STAR Checks</h2>
+
+  <p>
+    STAR provides testing and reporting techniques that can be linked back to WSG guidance.
+  </p>
+
+  <button id="load-star-stats" type="button">
+    Load STAR stats
+  </button>
+
+  <button id="validate-star-alignment" type="button">
+    Check STAR / WSG alignment
+  </button>
+
+  <button id="generate-checklist-with-tests" type="button">
+    Accessibility Checklist with STAR tests
+  </button>
+</section>
+
   
   <footer>
     <p>
