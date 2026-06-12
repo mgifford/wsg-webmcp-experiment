@@ -2,113 +2,107 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Background | WSG WebMCP Experiment</title>
+  <link rel="stylesheet" href="./styles/site.css">
 </head>
 <body>
-  <header>
-    <h1>Background</h1>
+  <a class="skip-link" href="#main">Skip to main content</a>
 
-    <nav>
-      <a href="./index.html">Experiment</a>
-      |
-      <a href="./background.html">Background</a>
-      |
-      <a href="https://www.w3.org/TR/web-sustainability-guidelines/">W3C Web Sustainability Guidelines</a>
-      |
-      <a href="https://github.com/mgifford/wsg-webmcp-experiment">GitHub Repository</a>
+  <header class="site-header">
+    <div class="site-branding">
+      <h1 class="site-title">Background</h1>
+      <p class="site-tagline">
+        Why this experiment exists, what it uses, and how the WSG and STAR datasets work together.
+      </p>
+    </div>
+
+    <nav class="site-nav" aria-label="Primary">
+      <ul class="site-nav__list">
+        <li><a href="./index.html">Experiment</a></li>
+        <li><a href="./background.html" aria-current="page">Background</a></li>
+        <li><a href="https://www.w3.org/TR/web-sustainability-guidelines/">W3C Web Sustainability Guidelines</a></li>
+        <li><a href="https://github.com/mgifford/wsg-webmcp-experiment">GitHub Repository</a></li>
+      </ul>
     </nav>
   </header>
 
-  <main>
-    <section>
-      <h2>Purpose of this experiment</h2>
+  <main id="main" class="page-shell" tabindex="-1">
+    <section class="hero">
+      <div class="hero__inner stack">
+        <p class="eyebrow">Project background</p>
+        <h2>Turning guideline text into something an agent can query directly.</h2>
 
-      <p>
-        This project explores whether the W3C Web Sustainability Guidelines can be exposed
-        as structured, task-oriented tools for AI agents using WebMCP.
-      </p>
+        <p class="lede">
+          This project explores whether the W3C Web Sustainability Guidelines can be exposed as
+          structured, task-oriented tools for AI agents using WebMCP.
+        </p>
 
-      <p>
-        The goal is not to replace the Web Sustainability Guidelines, human review, or
-        professional judgement. The goal is to test whether web standards can provide
-        machine-readable interfaces that help people find, apply, test, and document
-        sustainability guidance more effectively.
-      </p>
+        <p>
+          The goal is not to replace the Web Sustainability Guidelines, human review, or
+          professional judgement. The goal is to test whether web standards can provide
+          machine-readable interfaces that help people find, apply, test, and document
+          sustainability guidance more effectively.
+        </p>
+      </div>
     </section>
 
-    <section>
-      <h2>Why WebMCP matters</h2>
+    <section class="panel-grid panel-grid--two">
+      <section class="panel">
+        <div class="panel__inner stack">
+          <h2>Why WebMCP matters</h2>
 
-      <p>
-        Most web standards are published as documents. People read them, interpret them,
-        and decide how to apply them. That model remains essential, but it creates
-        friction when teams need to use standards during design reviews, procurement,
-        development, audits, and reporting.
-      </p>
+          <p>
+            Most web standards are published as documents. People read them, interpret them, and
+            decide how to apply them. That model remains essential, but it creates friction when
+            teams need to use standards during design reviews, procurement, development, audits,
+            and reporting.
+          </p>
 
-      <p>
-        WebMCP introduces a possible task layer for the web. A web page can expose named
-        tools with descriptions, input schemas, and executable functions. Compatible
-        agents can discover and call those tools directly.
-      </p>
+          <p>
+            WebMCP introduces a possible task layer for the web. A web page can expose named
+            tools with descriptions, input schemas, and executable functions. Compatible agents
+            can discover and call those tools directly.
+          </p>
+        </div>
+      </section>
 
-      <p>
-        For this experiment, that means an agent does not need to scrape the WSG page,
-        guess the structure of the document, or rely on stale training data. It can call
-        tools exposed by this page, such as <code>wsg.search</code>,
-        <code>wsg.get_guideline</code>, <code>wsg.generate_review_checklist</code>, or
-        <code>wsg.generate_review_checklist_with_tests</code>.
-      </p>
+      <section class="panel">
+        <div class="panel__inner stack">
+          <h2>What this project uses</h2>
 
-      <p>
-        In short: the standard remains the source. WebMCP provides a structured way for
-        AI-assisted tools to use that source.
-      </p>
+          <div class="summary-grid">
+            <div class="summary-card">
+              <strong>guidelines.json</strong>
+              <p>Categories, guidelines, criteria, benefits, tags, and resources.</p>
+            </div>
+
+            <div class="summary-card">
+              <strong>star.json</strong>
+              <p>Testing and reporting techniques that link back to WSG guidance.</p>
+            </div>
+          </div>
+
+          <p>
+            These files are copied into this project through a scheduled GitHub Action so the
+            demo can be tested from GitHub Pages without requiring a server.
+          </p>
+        </div>
+      </section>
     </section>
 
-    <section>
-      <h2>What this project currently uses</h2>
+    <section class="panel">
+      <div class="panel__inner stack">
+        <h2>Why both WSG and STAR are useful</h2>
 
-      <p>
-        This prototype currently uses two data files from the W3C Sustainable Web project.
-      </p>
+        <p>
+          The WSG data explains what sustainable web practice should address and why it matters.
+          STAR adds support for how guidance can be tested, reviewed, or evidenced.
+        </p>
 
-      <ul>
-        <li>
-          <a href="https://github.com/w3c/sustainableweb-wsg/blob/main/guidelines.json">
-            <code>guidelines.json</code>
-          </a>
-          provides the Web Sustainability Guidelines, including categories, guidelines,
-          criteria, benefits, tags, GRI impact information, and supporting resources.
-        </li>
-        <li>
-          <a href="https://github.com/w3c/sustainableweb-wsg/blob/main/star.json">
-            <code>star.json</code>
-          </a>
-          provides STAR techniques, including testing and reporting guidance that can
-          help turn WSG guidance into evidence-based review workflows.
-        </li>
-      </ul>
+        <p>Used together, they support a stronger workflow:</p>
 
-      <p>
-        These files are copied into this project through a scheduled GitHub Action so the
-        demo can be tested from GitHub Pages without requiring a server.
-      </p>
-    </section>
-
-    <section>
-      <h2>Why both WSG and STAR are useful</h2>
-
-      <p>
-        The WSG data explains what sustainable web practice should address and why it
-        matters. STAR adds support for how guidance can be tested, reviewed, or evidenced.
-      </p>
-
-      <p>
-        Used together, they support a stronger workflow:
-      </p>
-
-      <pre><code>Guidance
+        <pre class="results"><code>Guidance
   ↓
 Checklist
   ↓
@@ -118,118 +112,76 @@ Evidence
   ↓
 Review or reporting</code></pre>
 
-      <p>
-        This is more useful than search alone. Search helps someone find text. A
-        STAR-enhanced checklist helps someone apply the guidance in a review, procurement,
-        development, or audit context.
-      </p>
+        <p>
+          This is more useful than search alone. Search helps someone find text. A STAR-enhanced
+          checklist helps someone apply the guidance in a review, procurement, development, or
+          audit context.
+        </p>
+      </div>
     </section>
 
-    <section>
-      <h2>From document navigation to task completion</h2>
+    <section class="panel-grid panel-grid--two">
+      <section class="panel">
+        <div class="panel__inner stack">
+          <h2>From document navigation to task completion</h2>
 
-      <p>
-        A large standard can be difficult to use in practice. A person may need to know
-        which category to inspect, which tags matter, which criteria apply, and which
-        resources are relevant.
-      </p>
+          <p>
+            A large standard can be difficult to use in practice. A person may need to know which
+            category to inspect, which tags matter, which criteria apply, and which resources are
+            relevant.
+          </p>
 
-      <p>
-        WebMCP makes it possible to expose higher-level tasks instead of only exposing
-        document structure. Examples include:
-      </p>
+          <ul class="bullet-list">
+            <li>Find relevant sustainability guidance for a topic.</li>
+            <li>Generate draft review checklist items.</li>
+            <li>Find STAR techniques related to a WSG guideline.</li>
+            <li>Check whether STAR references still align with WSG anchors.</li>
+            <li>Generate draft procurement requirements.</li>
+            <li>Generate draft audit questions.</li>
+            <li>Generate a draft conformance claim for human review.</li>
+          </ul>
+        </div>
+      </section>
 
-      <ul>
-        <li>Find relevant sustainability guidance for a topic.</li>
-        <li>Generate draft review checklist items.</li>
-        <li>Find STAR techniques related to a WSG guideline.</li>
-        <li>Check whether STAR references still align with WSG anchors.</li>
-        <li>Generate draft procurement requirements.</li>
-        <li>Generate draft audit questions.</li>
-        <li>Generate a draft conformance claim for human review.</li>
-      </ul>
+      <section class="panel">
+        <div class="panel__inner stack">
+          <h2>What WebMCP adds</h2>
 
-      <p>
-        This does not make AI authoritative. It makes the standard easier for AI-assisted
-        workflows to use while keeping the published WSG and STAR data as the source.
-      </p>
-    </section>
+          <p>
+            The visible demo works in ordinary browsers because it uses normal JavaScript.
+            Firefox can load the JSON files, run searches, and display results.
+          </p>
 
-    <section>
-      <h2>Current WebMCP tools</h2>
+          <p>
+            WebMCP adds a separate machine-facing interface. In a browser where WebMCP is
+            available, the page can register structured tools that compatible AI agents or
+            browser tooling can discover and invoke.
+          </p>
 
-      <p>
-        This experiment currently exposes or is testing the following WebMCP tools:
-      </p>
-
-      <ul>
-        <li><code>wsg.search</code>: search WSG guidance by keyword, category, or tag.</li>
-        <li><code>wsg.get_guideline</code>: get a full WSG guideline by ID or exact title.</li>
-        <li><code>wsg.get_criterion</code>: get a WSG success criterion by generated ID or exact title.</li>
-        <li><code>wsg.list_by_tag</code>: list WSG guidance connected to a tag.</li>
-        <li><code>wsg.find_resources</code>: find supporting WSG resources.</li>
-        <li><code>wsg.suggest_audit_questions</code>: generate draft audit questions.</li>
-        <li><code>wsg.suggest_procurement_requirements</code>: generate draft procurement requirements.</li>
-        <li><code>wsg.generate_conformance_claim_draft</code>: generate a draft conformance claim.</li>
-        <li><code>wsg.generate_review_checklist</code>: generate a draft review checklist.</li>
-        <li><code>wsg.star_stats</code>: show STAR data statistics.</li>
-        <li><code>wsg.validate_star_alignment</code>: check whether STAR links still match WSG anchors.</li>
-        <li><code>wsg.find_star_techniques</code>: find STAR techniques by query or WSG guideline.</li>
-        <li><code>wsg.generate_review_checklist_with_tests</code>: generate checklist items with related STAR test techniques.</li>
-        <li><code>wsg.stats</code>: show WSG data statistics.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>What WebMCP adds beyond a normal web page</h2>
-
-      <p>
-        The visible demo works in ordinary browsers because it uses normal JavaScript.
-        Firefox can load the JSON files, run searches, and display results.
-      </p>
-
-      <p>
-        WebMCP adds a separate machine-facing interface. In a browser where WebMCP is
-        available, the page can register structured tools that compatible AI agents or
-        browser tooling can discover and invoke.
-      </p>
-
-      <p>
-        The difference is:
-      </p>
-
-      <pre><code>Normal browser interface:
+          <pre class="results"><code>Normal browser interface:
 A person clicks buttons and reads results.
 
 WebMCP interface:
 An agent discovers tools, reads input schemas, and calls the page's functions directly.</code></pre>
-
-      <p>
-        This matters because an AI system can use an explicit tool such as
-        <code>wsg.generate_review_checklist_with_tests</code> instead of scraping page
-        content or guessing how the underlying data is structured.
-      </p>
+        </div>
+      </section>
     </section>
 
-    <section>
-      <h2>Example scenario</h2>
+    <section class="panel-grid panel-grid--two">
+      <section class="panel">
+        <div class="panel__inner stack">
+          <h2>Example scenario</h2>
 
-      <p>
-        A procurement officer wants sustainability language for an accessibility-related
-        digital service contract.
-      </p>
+          <p>
+            A procurement officer wants sustainability language for an accessibility-related
+            digital service contract.
+          </p>
 
-      <p>
-        Without this kind of task layer, the person or AI assistant must search the WSG
-        document, interpret the results, find related resources, and decide how to turn
-        guidance into draft procurement language.
-      </p>
+          <p>
+            With this experiment, an AI-assisted workflow could call tools such as:
+          </p>
 
-      <p>
-        With this experiment, an AI-assisted workflow could call tools such as:
-      </p>
-
-      <pre><code>wsg.search({ "query": "accessibility" })
+          <pre class="results"><code>wsg.search({ "query": "accessibility" })
 
 wsg.suggest_procurement_requirements({
   "tag": "Accessibility",
@@ -242,140 +194,74 @@ wsg.generate_review_checklist_with_tests({
   "limit": 10
 })</code></pre>
 
-      <p>
-        The result is still a draft. It still requires human review. But it is grounded in
-        the current WSG and STAR data rather than being generated from model memory alone.
-      </p>
+          <p>
+            The result is still a draft. It still requires human review. But it is grounded in
+            the current WSG and STAR data rather than being generated from model memory alone.
+          </p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel__inner stack">
+          <h2>Alignment checks</h2>
+
+          <p>
+            This project also checks whether STAR references still align with WSG anchors. This
+            matters because the usefulness of STAR depends on its continued relationship to the
+            current WSG structure.
+          </p>
+
+          <p>
+            If the WSG URL anchors change, the alignment tool will surface those differences so
+            the dataset can be refreshed and reviewed.
+          </p>
+
+          <div class="notice">
+            <h3>Current limitations</h3>
+            <ul class="bullet-list">
+              <li>It is an experimental prototype, not an official W3C deliverable.</li>
+              <li>It does not certify conformance, sustainability, accessibility, procurement, or legal compliance.</li>
+              <li>Human review is required before relying on any generated output.</li>
+              <li>WebMCP is experimental and browser support is limited.</li>
+              <li>The browser cannot directly expose all internal flag state to a web page.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
     </section>
 
-    <section>
-      <h2>Alignment checks</h2>
+    <section class="panel">
+      <div class="panel__inner stack">
+        <h2>Why this matters for web standards</h2>
 
-      <p>
-        This project also checks whether STAR references still align with WSG anchors.
-        This matters because the usefulness of STAR depends on its continued relationship
-        to the current WSG structure.
-      </p>
+        <p>
+          The larger question is not only whether the Web Sustainability Guidelines can use
+          WebMCP. The larger question is whether web standards can expose authoritative,
+          structured task interfaces for AI-assisted systems.
+        </p>
 
-      <p>
-        The alignment check is not a formal validation service. It is a practical warning
-        mechanism for this experiment. If WSG anchors change or STAR references become
-        stale, the project should make that visible.
-      </p>
-    </section>
+        <p>
+          This pattern could eventually apply to other standards and guidance documents:
+          accessibility standards, ARIA roles, design tokens, privacy guidance, security
+          guidance, or digital public goods criteria.
+        </p>
 
-    <section>
-      <h2>Current limitations</h2>
+        <p>In short, the useful model is:</p>
 
-      <ul>
-        <li>This is an unofficial experiment.</li>
-        <li>It is not a W3C conformance tool.</li>
-        <li>It does not certify sustainability, accessibility, procurement, or legal compliance.</li>
-        <li>Generated audit questions, procurement requirements, and conformance claims are drafts only.</li>
-        <li>Human review is required before relying on any generated output.</li>
-        <li>WebMCP is experimental and browser support is limited.</li>
-        <li>The browser cannot directly expose all internal flag state to a web page.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>Why this matters for web standards</h2>
-
-      <p>
-        The larger question is not only whether the Web Sustainability Guidelines can use
-        WebMCP. The larger question is whether web standards can expose authoritative,
-        structured task interfaces for AI-assisted systems.
-      </p>
-
-      <p>
-        This pattern could eventually apply to other standards and guidance documents:
-        accessibility standards, ARIA roles, design tokens, privacy guidance, security
-        guidance, or digital public goods criteria.
-      </p>
-
-      <p>
-        A useful model is:
-      </p>
-
-      <pre><code>Standard
+        <pre class="results"><code>Standard
   ↓
 Structured data
   ↓
-Task-oriented tools
+Accessible tool
   ↓
-AI-assisted workflows
+Human review
   ↓
-Human-reviewed outcomes</code></pre>
-
-      <p>
-        That is the core idea behind this experiment.
-      </p>
-    </section>
-
-    <section>
-      <h2>Resources</h2>
-
-      <ul>
-        <li>
-          <a href="https://www.w3.org/TR/web-sustainability-guidelines/">
-            W3C Web Sustainability Guidelines
-          </a>
-        </li>
-        <li>
-          <a href="https://github.com/w3c/sustainableweb-wsg">
-            W3C Sustainable Web WSG repository
-          </a>
-        </li>
-        <li>
-          <a href="https://github.com/w3c/sustainableweb-wsg/blob/main/guidelines.json">
-            WSG guidelines.json
-          </a>
-        </li>
-        <li>
-          <a href="https://github.com/w3c/sustainableweb-wsg/blob/main/star.json">
-            STAR star.json
-          </a>
-        </li>
-        <li>
-          <a href="https://webmachinelearning.github.io/webmcp/">
-            WebMCP draft documentation
-          </a>
-        </li>
-        <li>
-          <a href="https://github.com/webmachinelearning/webmcp">
-            WebMCP GitHub repository
-          </a>
-        </li>
-        <li>
-          <a href="https://developer.chrome.com/docs/ai/webmcp">
-            Chrome WebMCP documentation
-          </a>
-        </li>
-        <li>
-          <a href="https://developer.chrome.com/docs/devtools/application/webmcp">
-            Chrome DevTools WebMCP documentation
-          </a>
-        </li>
-        <li>
-          <a href="https://codely.com/en/blog/what-is-webmcp-and-how-to-use-it">
-            Codely: What is WebMCP and how to use it
-          </a>
-        </li>
-        <li>
-          <a href="https://www.scalekit.com/blog/webmcp-the-missing-bridge-between-ai-agents-and-the-web">
-            Scalekit: WebMCP and AI agents
-          </a>
-        </li>
-        <li>
-          <a href="https://webmcp.dev/">
-            WebMCP community site
-          </a>
-        </li>
-      </ul>
+Safer decisions</code></pre>
+      </div>
     </section>
   </main>
 
-  <footer>
+  <footer class="footer">
     <p>
       This experimental project was developed with assistance from generative AI tools.
       Human review and validation remain essential.
