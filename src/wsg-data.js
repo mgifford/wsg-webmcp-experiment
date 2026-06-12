@@ -1,9 +1,12 @@
 // src/wsg-data.js
 
 const GUIDELINES_URL = './data/guidelines.json';
-
 let cachedData = null;
 let cachedIndex = null;
+
+const STAR_URL = './data/star.json';
+let cachedStarData = null;
+let cachedStarIndex = null;
 
 export async function loadGuidelines() {
   if (cachedData) return cachedData;
