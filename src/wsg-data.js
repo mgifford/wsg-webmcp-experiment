@@ -8,6 +8,7 @@ const STAR_URL = './data/star.json';
 let cachedStarData = null;
 let cachedStarIndex = null;
 
+// Cache the fetched WSG document so repeated reads do not refetch the JSON file.
 export async function loadGuidelines() {
   if (cachedData) return cachedData;
 
@@ -21,6 +22,7 @@ export async function loadGuidelines() {
   return cachedData;
 }
 
+// Build a searchable in-memory index that flattens the raw guideline JSON into tool-friendly records.
 export async function getIndex() {
   if (cachedIndex) return cachedIndex;
 
@@ -88,6 +90,7 @@ export function buildIndex(data) {
   };
 }
 
+// Statistics are derived from the indexed data, not stored separately in the source JSON.
 export async function getStats() {
   const index = await getIndex();
 
@@ -102,6 +105,7 @@ export async function getStats() {
   };
 }
 
+// Search is intentionally broad so the same function can back both human and WebMCP-facing queries.
 export async function searchGuidelines({
   query = '',
   category = '',
@@ -143,6 +147,7 @@ export async function searchGuidelines({
   return results.slice(0, limit);
 }
 
+// Guideline and criterion lookups accept either IDs or exact titles to keep the tools forgiving.
 export async function getGuideline(idOrTitle) {
   const index = await getIndex();
   const search = normalizeText(idOrTitle);
@@ -163,6 +168,7 @@ export async function getCriterion(idOrTitle) {
   ) || null;
 }
 
+// Tag lookup keeps the original tag list intact so the UI can surface the canonical labels.
 export async function listByTag(tag) {
   const index = await getIndex();
   const search = normalizeText(tag);
@@ -177,6 +183,7 @@ export async function listTags() {
   return index.tags;
 }
 
+// Resource lookup expands nested resource groups into a simple list that is easier for agents to consume.
 export async function findResources({
   query = '',
   tag = '',
@@ -217,6 +224,7 @@ export async function findResources({
   return resources.slice(0, limit);
 }
 
+// Draft questions stay phrased as prompts so humans can adapt them to their review process.
 export async function suggestAuditQuestions({
   guideline = '',
   tag = '',
@@ -247,6 +255,7 @@ export async function suggestAuditQuestions({
   };
 }
 
+// Procurement output intentionally uses SHOULD language to keep the text draftable, not normative.
 export async function suggestProcurementRequirements({
   guideline = '',
   tag = '',
@@ -277,6 +286,7 @@ export async function suggestProcurementRequirements({
   };
 }
 
+// Conformance claims are assembled from selected criteria and clearly marked as draft-only.
 export async function generateConformanceClaimDraft({
   criteria = [],
   guidelines = [],
@@ -397,7 +407,6 @@ export async function generateReviewChecklist({
   role = '',
   limit = 10
 } = {}) {
-
   const guidelines = await searchGuidelines({
     query: topic,
     limit
@@ -406,8 +415,11 @@ export async function generateReviewChecklist({
   const items = [];
 
   for (const guideline of guidelines) {
-    for (const criterion of guideline.criteria || []) {
+    if (items.length >= limit) {
+      break;
+    }
 
+    for (const criterion of guideline.criteria || []) {
       items.push({
         question: `Has the team ${criterion.description
           .replace(/\.$/, '')
@@ -433,6 +445,7 @@ export async function generateReviewChecklist({
   };
 }
 
+// STAR data follows the same caching and indexing pattern so alignment checks stay fast.
 export async function loadStar() {
   if (cachedStarData) return cachedStarData;
 
@@ -446,6 +459,7 @@ export async function loadStar() {
   return cachedStarData;
 }
 
+// The STAR index mirrors the WSG index so both datasets can be queried with similar helper functions.
 export async function getStarIndex() {
   if (cachedStarIndex) return cachedStarIndex;
 
@@ -486,6 +500,7 @@ export function buildStarIndex(star) {
   };
 }
 
+// STAR statistics summarize the secondary dataset used by the review-checklist helpers.
 export async function getStarStats() {
   const star = await getStarIndex();
 
@@ -497,6 +512,7 @@ export async function getStarStats() {
   };
 }
 
+// Alignment checks compare STAR links against the current WSG anchor set.
 export async function validateStarAlignment() {
   const wsg = await getIndex();
   const star = await getStarIndex();
@@ -534,6 +550,7 @@ export async function validateStarAlignment() {
   };
 }
 
+// Technique search returns STAR entries that match either the query text or a specific WSG guideline.
 export async function findStarTechniques({
   query = '',
   guideline = '',
@@ -570,6 +587,7 @@ export async function findStarTechniques({
   return results.slice(0, limit);
 }
 
+// Review checklists with tests combine the WSG prompt with the STAR techniques for each matched guideline.
 export async function generateReviewChecklistWithTests({
   topic = '',
   role = '',

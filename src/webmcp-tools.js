@@ -28,6 +28,23 @@ export async function registerWsgTools() {
     return;
   }
 
+  // Each tool maps a public WebMCP name to a small, read-only data helper.
+  await registerTool(modelContext, {
+    name: 'wsg.search',
+    description: 'Search WSG guidelines, criteria, tags, and supporting content.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        query: { type: 'string' },
+        category: { type: 'string' },
+        tag: { type: 'string' },
+        limit: { type: 'number' }
+      }
+    },
+    readOnlyHint: true,
+    execute: async (input) => searchGuidelines(input)
+  });
+
   await registerTool(modelContext, {
     name: 'wsg.get_guideline',
     description: 'Get a full WSG guideline by ID or exact title.',
@@ -141,75 +158,74 @@ export async function registerWsgTools() {
     execute: async (input) => generateConformanceClaimDraft(input)
   });
 
+  // STAR-backed tools sit alongside the WSG tools because they operate on the same source material.
+  await registerTool(modelContext, {
+    name: 'wsg.star_stats',
+    description: 'Show STAR data statistics.',
+    inputSchema: {
+      type: 'object',
+      properties: {}
+    },
+    readOnlyHint: true,
+    execute: async () => getStarStats()
+  });
 
-await registerTool(modelContext, {
-  name: 'wsg.star_stats',
-  description: 'Show STAR data statistics.',
-  inputSchema: {
-    type: 'object',
-    properties: {}
-  },
-  readOnlyHint: true,
-  execute: async () => getStarStats()
-});
+  await registerTool(modelContext, {
+    name: 'wsg.validate_star_alignment',
+    description: 'Check whether STAR technique links still match WSG guideline anchors.',
+    inputSchema: {
+      type: 'object',
+      properties: {}
+    },
+    readOnlyHint: true,
+    execute: async () => validateStarAlignment()
+  });
 
-await registerTool(modelContext, {
-  name: 'wsg.validate_star_alignment',
-  description: 'Check whether STAR technique links still match WSG guideline anchors.',
-  inputSchema: {
-    type: 'object',
-    properties: {}
-  },
-  readOnlyHint: true,
-  execute: async () => validateStarAlignment()
-});
+  await registerTool(modelContext, {
+    name: 'wsg.find_star_techniques',
+    description: 'Find STAR techniques by query or WSG guideline ID.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        query: { type: 'string' },
+        guideline: { type: 'string' },
+        limit: { type: 'number' }
+      }
+    },
+    readOnlyHint: true,
+    execute: async (input) => findStarTechniques(input)
+  });
 
-await registerTool(modelContext, {
-  name: 'wsg.find_star_techniques',
-  description: 'Find STAR techniques by query or WSG guideline ID.',
-  inputSchema: {
-    type: 'object',
-    properties: {
-      query: { type: 'string' },
-      guideline: { type: 'string' },
-      limit: { type: 'number' }
-    }
-  },
-  readOnlyHint: true,
-  execute: async (input) => findStarTechniques(input)
-});
+  await registerTool(modelContext, {
+    name: 'wsg.generate_review_checklist_with_tests',
+    description: 'Generate a WSG review checklist with related STAR test techniques.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        topic: { type: 'string' },
+        role: { type: 'string' },
+        guideline: { type: 'string' },
+        limit: { type: 'number' }
+      }
+    },
+    readOnlyHint: true,
+    execute: async (input) => generateReviewChecklistWithTests(input)
+  });
 
-await registerTool(modelContext, {
-  name: 'wsg.generate_review_checklist_with_tests',
-  description: 'Generate a WSG review checklist with related STAR test techniques.',
-  inputSchema: {
-    type: 'object',
-    properties: {
-      topic: { type: 'string' },
-      role: { type: 'string' },
-      guideline: { type: 'string' },
-      limit: { type: 'number' }
-    }
-  },
-  readOnlyHint: true,
-  execute: async (input) => generateReviewChecklistWithTests(input)
-});
-
-  
-await registerTool(modelContext, {
-  name: 'wsg.generate_review_checklist',
-  description: 'Generate a review checklist from WSG guidance.',
-  inputSchema: {
-    type: 'object',
-    properties: {
-      topic: { type: 'string' },
-      role: { type: 'string' },
-      limit: { type: 'number' }
-    }
-  },
-  readOnlyHint: true,
-  execute: async (input) => generateReviewChecklist(input)
-});
+  await registerTool(modelContext, {
+    name: 'wsg.generate_review_checklist',
+    description: 'Generate a review checklist from WSG guidance.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        topic: { type: 'string' },
+        role: { type: 'string' },
+        limit: { type: 'number' }
+      }
+    },
+    readOnlyHint: true,
+    execute: async (input) => generateReviewChecklist(input)
+  });
   
   await registerTool(modelContext, {
     name: 'wsg.stats',
@@ -227,11 +243,13 @@ await registerTool(modelContext, {
   }
 }
 
+// Keep registration isolated so the tool definitions stay easy to scan and maintain.
 async function registerTool(modelContext, toolDefinition) {
   await modelContext.registerTool(toolDefinition);
   console.log(`Registered ${toolDefinition.name}`);
 }
 
+// The page uses browser detection only for messaging, not for feature gating.
 function getBrowserName() {
   const ua = navigator.userAgent;
 
@@ -243,6 +261,7 @@ function getBrowserName() {
   return 'this browser';
 }
 
+// Give users a browser-specific explanation when WebMCP is not exposed.
 function getUnavailableMessage() {
   const browser = getBrowserName();
 

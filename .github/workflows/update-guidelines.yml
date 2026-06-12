@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: write # Required so the workflow token can commit refreshed data files back to the repository.
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -29,26 +29,11 @@ jobs:
           curl -fsSL \
             https://raw.githubusercontent.com/w3c/sustainableweb-wsg/main/star.json \
             -o data/star.json.new
-            
 
       - name: Validate JSON
         run: |
           jq empty data/guidelines.json.new
           jq empty data/star.json.new
-
-      - name: Replace file if changed
-        run: |
-          if [ ! -f data/guidelines.json ]; then
-            mv data/guidelines.json.new data/guidelines.json
-            echo "changed=true" >> "$GITHUB_ENV"
-          elif cmp -s data/guidelines.json data/guidelines.json.new; then
-            rm data/guidelines.json.new
-            echo "changed=false" >> "$GITHUB_ENV"
-          else
-            mv data/guidelines.json.new data/guidelines.json
-            echo "changed=true" >> "$GITHUB_ENV"
-          fi
-
 
       - name: Replace files if changed
         run: |
@@ -75,7 +60,6 @@ jobs:
           done
 
           echo "changed=$changed" >> "$GITHUB_ENV"
-          
 
       - name: Commit and push changes
         if: env.changed == 'true'
@@ -85,4 +69,4 @@ jobs:
           git add data/guidelines.json data/star.json
           git diff --cached --quiet || git commit -m "Update WSG data files"
           git push
-          
+

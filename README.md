@@ -31,6 +31,15 @@ This prototype uses the machine-readable guideline data published by the WSG pro
 
 https://github.com/w3c/sustainableweb-wsg/blob/main/guidelines.json
 
+It also uses STAR technique data from the same project:
+
+https://github.com/w3c/sustainableweb-wsg/blob/main/star.json
+
+Those files are refreshed by the scheduled GitHub Actions workflow in
+`.github/workflows/update-guidelines.yml`. The repository must allow GitHub Actions
+to write contents so the workflow can commit updates to `data/guidelines.json` and
+`data/star.json`.
+
 ## Objectives
 
 This project aims to:
@@ -41,11 +50,15 @@ This project aims to:
 * Investigate agent-assisted sustainability audits and reporting.
 * Gather practical experience that may inform future standards discussions.
 
-## Initial Tool Set
+## Current Tool Set
 
 ### wsg.search
 
 Search WSG guidelines, success criteria, tags, and supporting resources.
+
+### wsg.get_guideline
+
+Retrieve a full WSG guideline by ID or exact title.
 
 ### wsg.get_criterion
 
@@ -67,11 +80,43 @@ Examples:
 
 Return supporting resources, references, and implementation guidance related to a guideline or criterion.
 
+### wsg.suggest_audit_questions
+
+Generate draft audit questions from WSG guidelines or tags.
+
+### wsg.suggest_procurement_requirements
+
+Generate draft procurement requirements from WSG guidelines or tags.
+
 ### wsg.generate_conformance_claim_draft
 
 Generate a draft conformance statement based on selected WSG criteria.
 
 Generated content is informational only and should be reviewed by humans before use.
+
+### wsg.generate_review_checklist
+
+Generate a draft review checklist from WSG guidance.
+
+### wsg.star_stats
+
+Show STAR data statistics.
+
+### wsg.validate_star_alignment
+
+Check whether STAR links still match WSG anchors.
+
+### wsg.find_star_techniques
+
+Find STAR techniques by query or WSG guideline.
+
+### wsg.generate_review_checklist_with_tests
+
+Generate checklist items with related STAR test techniques.
+
+### wsg.stats
+
+Show WSG data statistics.
 
 ## Future Tool Ideas
 
@@ -80,8 +125,6 @@ The following tools are being considered for later phases:
 * wsg.list_by_role
 * wsg.map_to_wcag
 * wsg.map_to_sdg
-* wsg.suggest_audit_questions
-* wsg.generate_procurement_requirements
 * wsg.generate_training_material
 * wsg.compare_guidelines
 

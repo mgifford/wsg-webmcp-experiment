@@ -10,11 +10,13 @@ import {
 
 import { registerWsgTools } from './webmcp-tools.js';
 
+// Register WebMCP tools as soon as the module loads so supported browsers can discover them.
 registerWsgTools();
 
 const output = document.querySelector('#output');
 const button = document.querySelector('#load-stats');
 
+// The stats button demonstrates the shared data layer by combining summary data and a sample search.
 button.addEventListener('click', async () => {
   try {
     const stats = await getStats();
@@ -38,6 +40,7 @@ button.addEventListener('click', async () => {
 const searchButton = document.querySelector('#search-wsg');
 const searchInput = document.querySelector('#search-query');
 
+// The search form is the simplest human-facing entry point into the guidelines index.
 searchButton.addEventListener('click', async () => {
   try {
     const results = await searchGuidelines({
@@ -56,6 +59,7 @@ const listWebMcpToolsButton = document.querySelector('#list-webmcp-tools');
 const testWebMcpStatsButton = document.querySelector('#test-webmcp-stats');
 const webMcpOutput = document.querySelector('#webmcp-output');
 
+// Chromium exposes WebMCP testing hooks through navigator.modelContextTesting when available.
 function getModelContextTesting() {
   return navigator.modelContextTesting || null;
 }
@@ -114,6 +118,7 @@ if (testWebMcpStatsButton) {
 
 const checklistButton = document.querySelector('#generate-checklist');
 
+// The checklist generators turn guideline text into draft review prompts for humans to refine.
 checklistButton?.addEventListener('click', async () => {
   try {
     const result = await generateReviewChecklist({
@@ -133,6 +138,7 @@ const starStatsButton = document.querySelector('#load-star-stats');
 const starAlignmentButton = document.querySelector('#validate-star-alignment');
 const checklistWithTestsButton = document.querySelector('#generate-checklist-with-tests');
 
+// STAR actions stay separate because they depend on the second dataset and alignment checks.
 starStatsButton?.addEventListener('click', async () => {
   try {
     const result = await getStarStats();
