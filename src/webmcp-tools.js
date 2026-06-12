@@ -8,7 +8,11 @@ import {
   suggestAuditQuestions,
   suggestProcurementRequirements,
   generateConformanceClaimDraft,
-  generateReviewChecklist
+  generateReviewChecklist,
+  getStarStats,
+  validateStarAlignment,
+  findStarTechniques,
+  generateReviewChecklistWithTests
 } from './wsg-data.js';
 
 export async function registerWsgTools() {
