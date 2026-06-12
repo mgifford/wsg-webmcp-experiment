@@ -432,3 +432,220 @@ export async function generateReviewChecklist({
     items
   };
 }
+
+export async function loadStar() {
+  if (cachedStarData) return cachedStarData;
+
+  const response = await fetch(STAR_URL);
+
+  if (!response.ok) {
+    throw new Error(`Failed to load ${STAR_URL}`);
+  }
+
+  cachedStarData = await response.json();
+  return cachedStarData;
+}
+
+export async function getStarIndex() {
+  if (cachedStarIndex) return cachedStarIndex;
+
+  const star = await loadStar();
+  cachedStarIndex = buildStarIndex(star);
+
+  return cachedStarIndex;
+}
+
+export function buildStarIndex(star) {
+  const techniques = [];
+
+  for (const category of star.category || []) {
+    for (const technique of category.techniques || []) {
+      const wsgLinks = extractWsgLinks(technique.applicability || '');
+
+      techniques.push({
+        id: technique.id,
+        title: technique.title,
+        categoryId: category.id,
+        categoryName: category.name,
+        categoryShortName: category.shortName || category.name,
+        applicability: technique.applicability || '',
+        wsgLinks,
+        description: flattenNumberedObjects(technique.description || []),
+        examples: flattenNumberedObjects(technique.examples || []),
+        tests: technique.tests || [],
+        testSuite: technique.testSuite || ''
+      });
+    }
+  }
+
+  return {
+    title: star.title || 'Sustainable Tooling And Reporting',
+    edition: star.edition || '',
+    lastModified: star.lastModified || '',
+    techniques
+  };
+}
+
+export async function getStarStats() {
+  const star = await getStarIndex();
+
+  return {
+    title: star.title,
+    edition: star.edition,
+    lastModified: star.lastModified,
+    techniques: star.techniques.length
+  };
+}
+
+export async function validateStarAlignment() {
+  const wsg = await getIndex();
+  const star = await getStarIndex();
+
+  const wsgHashes = new Set(
+    wsg.guidelines
+      .map((guideline) => getUrlHash(guideline.url))
+      .filter(Boolean)
+  );
+
+  const issues = [];
+
+  for (const technique of star.techniques) {
+    for (const link of technique.wsgLinks) {
+      const hash = getUrlHash(link.url);
+
+      if (!hash || !wsgHashes.has(hash)) {
+        issues.push({
+          techniqueId: technique.id,
+          techniqueTitle: technique.title,
+          problem: 'STAR technique links to a WSG anchor that was not found in guidelines.json.',
+          url: link.url
+        });
+      }
+    }
+  }
+
+  return {
+    status: issues.length === 0
+      ? 'No STAR-to-WSG anchor alignment problems found.'
+      : 'Potential STAR-to-WSG alignment problems found.',
+    wsgGuidelines: wsg.guidelines.length,
+    starTechniques: star.techniques.length,
+    issues
+  };
+}
+
+export async function findStarTechniques({
+  query = '',
+  guideline = '',
+  limit = 20
+} = {}) {
+  const star = await getStarIndex();
+  const normalizedQuery = normalizeText(query);
+  let guidelineHash = '';
+
+  if (guideline) {
+    const wsgGuideline = await getGuideline(guideline);
+    guidelineHash = wsgGuideline ? getUrlHash(wsgGuideline.url) : '';
+  }
+
+  const results = star.techniques.filter((technique) => {
+    const matchesQuery =
+      !normalizedQuery ||
+      normalizeText([
+        technique.id,
+        technique.title,
+        technique.applicability,
+        technique.description.join(' '),
+        technique.examples.join(' '),
+        JSON.stringify(technique.tests)
+      ].join(' ')).includes(normalizedQuery);
+
+    const matchesGuideline =
+      !guidelineHash ||
+      technique.wsgLinks.some((link) => getUrlHash(link.url) === guidelineHash);
+
+    return matchesQuery && matchesGuideline;
+  });
+
+  return results.slice(0, limit);
+}
+
+export async function generateReviewChecklistWithTests({
+  topic = '',
+  role = '',
+  guideline = '',
+  limit = 10
+} = {}) {
+  const guidelines = guideline
+    ? [await getGuideline(guideline)].filter(Boolean)
+    : await searchGuidelines({ query: topic, limit });
+
+  const items = [];
+
+  for (const item of guidelines) {
+    const starTechniques = await findStarTechniques({
+      guideline: item.id,
+      limit: 10
+    });
+
+    for (const criterion of item.criteria || []) {
+      items.push({
+        question: `Has the team ${toAuditPhrase(criterion.description)}`,
+        guidelineId: item.id,
+        guideline: item.guideline,
+        criterion: criterion.title,
+        sourceUrl: item.url,
+        starTechniques: starTechniques.map((technique) => ({
+          id: technique.id,
+          title: technique.title,
+          tests: technique.tests,
+          testSuite: technique.testSuite
+        }))
+      });
+
+      if (items.length >= limit) break;
+    }
+
+    if (items.length >= limit) break;
+  }
+
+  return {
+    status: 'Draft checklist with STAR techniques. Human review required.',
+    topic,
+    role,
+    guideline,
+    items
+  };
+}
+
+function extractWsgLinks(markdown) {
+  const links = [];
+  const regex = /\[([^\]]+)\]\((https:\/\/www\.w3\.org\/TR\/web-sustainability-guidelines\/#[^)]+)\)/g;
+
+  let match;
+
+  while ((match = regex.exec(markdown)) !== null) {
+    links.push({
+      label: match[1],
+      url: match[2]
+    });
+  }
+
+  return links;
+}
+
+function getUrlHash(url) {
+  return String(url || '').split('#')[1] || '';
+}
+
+function flattenNumberedObjects(items) {
+  const values = [];
+
+  for (const item of items) {
+    for (const value of Object.values(item)) {
+      values.push(value);
+    }
+  }
+
+  return values;
+}
