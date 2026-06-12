@@ -41,6 +41,11 @@ function renderTaskLayerResult(result) {
     return;
   }
 
+  if (Array.isArray(result.items)) {
+    renderChecklistResult(result);
+    return;
+  }
+
   const container = document.createElement('div');
   container.className = 'stack';
 
@@ -75,6 +80,33 @@ function renderTaskLayerResult(result) {
   output.replaceChildren(container);
 }
 
+function renderChecklistResult(result) {
+  const container = document.createElement('div');
+  container.className = 'stack';
+
+  const summary = document.createElement('p');
+  summary.className = 'lede';
+  summary.textContent = buildTaskLayerSummary(result);
+  container.append(summary);
+
+  const checklistSection = document.createElement('section');
+  checklistSection.className = 'stack';
+
+  checklistSection.append(buildSectionHeading('Checklist items'));
+  checklistSection.append(buildChecklistList(result.items || []));
+  container.append(checklistSection);
+
+  const detailsSection = document.createElement('section');
+  detailsSection.className = 'stack';
+  detailsSection.append(buildSectionHeading('Source guideline links'));
+  detailsSection.append(buildSourceLinkList(buildTaskLayerSourceLinks(result)));
+  container.append(detailsSection);
+
+  container.append(buildRawJsonDetails(result));
+
+  output.replaceChildren(container);
+}
+
 function buildSectionHeading(text) {
   const heading = document.createElement('h3');
   heading.textContent = text;
@@ -99,6 +131,182 @@ function buildTaskLayerList(items) {
   }
 
   return list;
+}
+
+function buildChecklistList(items) {
+  const list = document.createElement('ul');
+  list.className = 'checklist-list';
+
+  if (!items.length) {
+    const item = document.createElement('li');
+    item.textContent = 'No checklist items were returned.';
+    list.append(item);
+    return list;
+  }
+
+  for (const [index, item] of items.entries()) {
+    list.append(buildChecklistItem(item, index));
+  }
+
+  return list;
+}
+
+function buildChecklistItem(item, index) {
+  const listItem = document.createElement('li');
+  listItem.className = 'checklist-item';
+
+  const label = document.createElement('label');
+  label.className = 'checklist-item__label';
+
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.disabled = true;
+  checkbox.className = 'checklist-item__checkbox';
+  checkbox.setAttribute('aria-label', `Checklist item ${index + 1}`);
+
+  const content = document.createElement('div');
+  content.className = 'checklist-item__content';
+
+  const question = document.createElement('span');
+  question.className = 'checklist-item__question';
+  question.textContent = item.question || `Checklist item ${index + 1}`;
+  content.append(question);
+
+  const meta = buildChecklistMeta(item);
+  if (meta) {
+    content.append(meta);
+  }
+
+  label.append(checkbox, content);
+  listItem.append(label);
+
+  const resources = buildChecklistResources(item);
+  if (resources) {
+    listItem.append(resources);
+  }
+
+  const starTechniques = buildChecklistStarTechniques(item);
+  if (starTechniques) {
+    listItem.append(starTechniques);
+  }
+
+  return listItem;
+}
+
+function buildChecklistMeta(item) {
+  const pieces = [];
+
+  if (item.categoryName) {
+    pieces.push(`Category: ${item.categoryName}`);
+  }
+
+  if (item.tags && item.tags.length) {
+    pieces.push(`Tags: ${item.tags.join(', ')}`);
+  }
+
+  if (item.benefits && item.benefits.length) {
+    pieces.push(`Benefits: ${item.benefits.join(', ')}`);
+  }
+
+  if (item.gri && item.gri.length) {
+    pieces.push(`GRI: ${item.gri.join(', ')}`);
+  }
+
+  if (!pieces.length) {
+    return null;
+  }
+
+  const meta = document.createElement('p');
+  meta.className = 'checklist-item__meta';
+  meta.textContent = pieces.join(' · ');
+  return meta;
+}
+
+function buildChecklistResources(item) {
+  if (!item.resources || !item.resources.length) {
+    return null;
+  }
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'checklist-item__group';
+
+  const heading = document.createElement('p');
+  heading.className = 'checklist-item__group-label';
+  heading.textContent = 'Supporting resources';
+  wrapper.append(heading);
+
+  const list = document.createElement('ul');
+  list.className = 'checklist-item__sublist';
+
+  for (const resource of item.resources) {
+    const resourceItem = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = resource.url;
+    link.textContent = resource.title;
+    resourceItem.append(link);
+    list.append(resourceItem);
+  }
+
+  wrapper.append(list);
+  return wrapper;
+}
+
+function buildChecklistStarTechniques(item) {
+  if (!item.starTechniques || !item.starTechniques.length) {
+    return null;
+  }
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'checklist-item__group';
+
+  const heading = document.createElement('p');
+  heading.className = 'checklist-item__group-label';
+  heading.textContent = 'Related STAR techniques';
+  wrapper.append(heading);
+
+  const list = document.createElement('ul');
+  list.className = 'checklist-item__sublist';
+
+  for (const technique of item.starTechniques) {
+    const techniqueItem = document.createElement('li');
+
+    const techniqueTitle = document.createElement('strong');
+    techniqueTitle.textContent = technique.title;
+    techniqueItem.append(techniqueTitle);
+
+    if (technique.testSuite) {
+      const suite = document.createElement('span');
+      suite.className = 'checklist-item__subtext';
+      suite.textContent = ` ${technique.testSuite}`;
+      techniqueItem.append(suite);
+    }
+
+    if (technique.tests && technique.tests.length) {
+      const tests = document.createElement('span');
+      tests.className = 'checklist-item__subtext';
+      tests.textContent = ` Tests: ${technique.tests.join(', ')}`;
+      techniqueItem.append(tests);
+    }
+
+    list.append(techniqueItem);
+  }
+
+  wrapper.append(list);
+  return wrapper;
+}
+
+function buildRawJsonDetails(result) {
+  const details = document.createElement('details');
+  const detailsSummary = document.createElement('summary');
+  detailsSummary.textContent = 'Raw JSON';
+  details.append(detailsSummary);
+
+  const rawJson = document.createElement('pre');
+  rawJson.className = 'results';
+  rawJson.textContent = JSON.stringify(result, null, 2);
+  details.append(rawJson);
+
+  return details;
 }
 
 function buildSourceLinkList(sourceLinks) {

@@ -167,7 +167,8 @@
           <h2>Output</h2>
 
           <p>
-            Results from searches and generators appear here.
+            Results from searches and generators appear here. Source links and raw JSON are kept
+            alongside each result so the draft is easy to inspect and verify.
           </p>
 
           <div id="output" class="results" role="status" aria-live="polite" aria-atomic="true"></div>
@@ -212,19 +213,22 @@
 
     <section class="panel">
       <div class="panel__inner stack">
-        <h2>WebMCP diagnostics</h2>
+        <details class="panel-disclosure">
+          <summary>WebMCP diagnostics</summary>
 
-        <p>
-          These controls test whether this browser exposes WebMCP tool discovery or
-          invocation features. They are separate from the normal JavaScript demo.
-        </p>
+          <p>
+            These controls test whether this browser exposes WebMCP tool discovery or
+            invocation features. They are separate from the normal JavaScript demo and stay
+            collapsed unless you need them.
+          </p>
 
-        <div class="button-row">
-          <button id="list-webmcp-tools" type="button">List registered WebMCP tools</button>
-          <button id="test-webmcp-stats" type="button" class="secondary">Test wsg.stats through WebMCP</button>
-        </div>
+          <div class="button-row">
+            <button id="list-webmcp-tools" type="button">List registered WebMCP tools</button>
+            <button id="test-webmcp-stats" type="button" class="secondary">Test wsg.stats through WebMCP</button>
+          </div>
 
-        <pre id="webmcp-output" class="results" role="status" aria-live="polite" aria-atomic="true"></pre>
+          <pre id="webmcp-output" class="results" role="status" aria-live="polite" aria-atomic="true"></pre>
+        </details>
       </div>
     </section>
   </main>

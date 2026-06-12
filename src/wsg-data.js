@@ -540,7 +540,14 @@ export async function generateReviewChecklist({
         guidelineId: guideline.id,
         guideline: guideline.guideline,
         criterion: criterion.title,
-        sourceUrl: guideline.url
+        sourceUrl: guideline.url,
+        categoryId: guideline.categoryId,
+        categoryName: guideline.categoryName,
+        categoryShortName: guideline.categoryShortName,
+        tags: guideline.tags || [],
+        benefits: guideline.benefits || [],
+        gri: guideline.gri || [],
+        resources: normalizeResources(criterion.resources || [])
       });
 
       if (items.length >= limit) {
@@ -726,6 +733,13 @@ export async function generateReviewChecklistWithTests({
         guideline: item.guideline,
         criterion: criterion.title,
         sourceUrl: item.url,
+        categoryId: item.categoryId,
+        categoryName: item.categoryName,
+        categoryShortName: item.categoryShortName,
+        tags: item.tags || [],
+        benefits: item.benefits || [],
+        gri: item.gri || [],
+        resources: normalizeResources(criterion.resources || []),
         starTechniques: starTechniques.map((technique) => ({
           id: technique.id,
           title: technique.title,

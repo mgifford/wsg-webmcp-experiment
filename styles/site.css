@@ -324,6 +324,114 @@ pre code {
   align-self: start;
 }
 
+.panel-disclosure {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.panel-disclosure > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+  color: var(--heading);
+  font-family: var(--heading-font);
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.panel-disclosure > summary::marker,
+.panel-disclosure > summary::-webkit-details-marker {
+  display: none;
+}
+
+.panel-disclosure > summary::before {
+  content: "+";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--surface-strong);
+  color: var(--accent-strong);
+  font-family: var(--body-font);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.panel-disclosure[open] > summary::before {
+  content: "−";
+}
+
+.checklist-list {
+  display: grid;
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.checklist-item {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.checklist-item__label {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin: 0;
+  font-weight: 700;
+}
+
+.checklist-item__checkbox {
+  margin-top: 0.2rem;
+  flex: 0 0 auto;
+  accent-color: var(--accent);
+}
+
+.checklist-item__content {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.checklist-item__question {
+  color: var(--heading);
+  font-size: 1.03rem;
+}
+
+.checklist-item__meta,
+.checklist-item__group-label,
+.checklist-item__subtext {
+  color: var(--text-muted);
+}
+
+.checklist-item__group {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.checklist-item__group-label {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.checklist-item__sublist {
+  margin: 0;
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
 .eyebrow {
   display: inline-flex;
   align-items: center;
