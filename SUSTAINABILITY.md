@@ -18,6 +18,11 @@
 - Review generated content before relying on it.
 - Use AI to support drafting and exploration, not to replace human judgment.
 
+## Agent Guidance
+- Treat this file as the project policy layer and `AGENTS.md` as the operational layer.
+- If a task touches sustainability, accessibility, page weight, request count, hosting, or infrastructure choices, consult the WSG WebMCP tools before proposing code.
+- Use WSG WebMCP to draft checklists or reviews, then validate the result against the static docs if WebMCP is not available.
+
 ## Ownership
 - Assign owners for the data, demo, and docs.
 - Track baselines, targets, and review cadence.

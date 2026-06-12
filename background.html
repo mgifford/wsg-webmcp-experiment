@@ -211,6 +211,25 @@ An agent discovers tools, reads input schemas, and calls the page's functions di
 
     <section class="panel">
       <div class="panel__inner stack">
+        <h2>How the policy files fit in</h2>
+
+        <p>
+          This prototype is not an official W3C deliverable, but it is useful as a demonstration
+          of how repository policy can point agents toward WebMCP when sustainability matters.
+          In this repo, [SUSTAINABILITY.md](./SUSTAINABILITY.md) explains the human policy layer,
+          and [AGENTS.md](./AGENTS.md) tells the agent when to consult the WSG tools.
+        </p>
+
+        <p>
+          That means an LLM does not need to guess whether sustainability guidance matters. The
+          instruction is explicit: if the change touches accessibility, page weight, request
+          count, hosting, or infrastructure, check the WSG WebMCP tools before drafting code.
+        </p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel__inner stack">
         <h2>How this could apply to other web standards</h2>
 
         <p>

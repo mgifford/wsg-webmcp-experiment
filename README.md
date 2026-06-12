@@ -43,6 +43,10 @@ The repository is intentionally simple:
 The page works as a normal JavaScript demo in browsers that do not support WebMCP.
 When WebMCP is available, the same page also registers machine-readable tools for compatible agents.
 
+The repository also includes [AGENTS.md](AGENTS.md) and [SUSTAINABILITY.md](SUSTAINABILITY.md) as a small policy layer for human readers and coding agents.
+`SUSTAINABILITY.md` states the project's sustainability goals, while `AGENTS.md` tells agents when to consult the WSG WebMCP tools for sustainability-sensitive work.
+That combination is meant to make the sustainability workflow explicit instead of implied.
+
 ## Current WebMCP Tools
 
 ### Lookup and retrieval
