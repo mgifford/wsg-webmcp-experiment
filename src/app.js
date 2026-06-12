@@ -24,7 +24,7 @@ registerWsgTools().catch((error) => {
   console.error(error);
 });
 
-const output = document.querySelector('#output');
+const output = document.querySelector('#output-content');
 const button = document.querySelector('#load-stats');
 const webMcpCapabilities = document.querySelector('#webmcp-capabilities');
 
@@ -158,21 +158,21 @@ function renderChecklistResult(result) {
   summary.textContent = buildTaskLayerSummary(result);
   container.append(summary);
 
-  const resourcesToggle = buildChecklistResourcesToggle(result.items || []);
+  const checklistSection = document.createElement('section');
+  checklistSection.className = 'stack';
+
+  const resourcesToggle = buildChecklistResourcesToggle(result.items || [], checklistSection);
   if (resourcesToggle) {
     container.append(resourcesToggle);
   }
 
-  const checklistSection = document.createElement('section');
-  checklistSection.className = 'stack';
-
-  checklistSection.append(buildSectionHeading('Checklist items'));
+  checklistSection.append(buildSectionHeading('Checklist items', 'checklist-items'));
   checklistSection.append(buildChecklistList(result.items || []));
   container.append(checklistSection);
 
   const detailsSection = document.createElement('section');
   detailsSection.className = 'stack';
-  detailsSection.append(buildSectionHeading('Source guideline links'));
+  detailsSection.append(buildSectionHeading('Source guideline links', 'source-guideline-links'));
   detailsSection.append(buildSourceLinkList(buildTaskLayerSourceLinks(result)));
   container.append(detailsSection);
 
@@ -181,9 +181,32 @@ function renderChecklistResult(result) {
   output.replaceChildren(container);
 }
 
-function buildSectionHeading(text) {
+function buildSectionHeading(text, id) {
   const heading = document.createElement('h3');
-  heading.textContent = text;
+
+  if (!id) {
+    heading.textContent = text;
+    return heading;
+  }
+
+  heading.id = id;
+  heading.tabIndex = -1;
+
+  const link = document.createElement('a');
+  link.className = 'section-anchor';
+  link.href = `#${id}`;
+
+  const label = document.createElement('span');
+  label.textContent = text;
+
+  const marker = document.createElement('span');
+  marker.className = 'section-anchor__marker';
+  marker.setAttribute('aria-hidden', 'true');
+  marker.textContent = '#';
+
+  link.append(label, marker);
+  heading.append(link);
+
   return heading;
 }
 
@@ -267,7 +290,7 @@ function buildChecklistItem(item, index) {
   return listItem;
 }
 
-function buildChecklistResourcesToggle(items) {
+function buildChecklistResourcesToggle(items, scope) {
   const itemsWithResources = items.filter((item) => item.resources && item.resources.length);
 
   if (!itemsWithResources.length) {
@@ -291,7 +314,7 @@ function buildChecklistResourcesToggle(items) {
   button.addEventListener('click', () => {
     const isExpanded = button.getAttribute('aria-expanded') === 'true';
     const nextExpanded = !isExpanded;
-    const resourceGroups = document.querySelectorAll('.checklist-item__resources');
+    const resourceGroups = (scope || document).querySelectorAll('.checklist-item__resources');
 
     for (const group of resourceGroups) {
       group.hidden = !nextExpanded;
@@ -313,15 +336,15 @@ function buildChecklistMeta(item) {
   }
 
   if (item.tags && item.tags.length) {
-    pieces.push(`Tags: ${item.tags.join(', ')}`);
+    pieces.push(`Tags: ${formatMetadataList(item.tags)}`);
   }
 
   if (item.benefits && item.benefits.length) {
-    pieces.push(`Benefits: ${item.benefits.join(', ')}`);
+    pieces.push(`Benefits: ${formatMetadataList(item.benefits)}`);
   }
 
   if (item.gri && item.gri.length) {
-    pieces.push(`GRI: ${item.gri.join(', ')}`);
+    pieces.push(`GRI: ${formatMetadataList(item.gri)}`);
   }
 
   if (!pieces.length) {
@@ -332,6 +355,39 @@ function buildChecklistMeta(item) {
   meta.className = 'checklist-item__meta';
   meta.textContent = pieces.join(' · ');
   return meta;
+}
+
+function formatMetadataList(values) {
+  return values
+    .map((value) => {
+      if (value == null) {
+        return '';
+      }
+
+      if (typeof value === 'string') {
+        return value;
+      }
+
+      if (typeof value === 'number' || typeof value === 'boolean') {
+        return String(value);
+      }
+
+      if (Array.isArray(value)) {
+        return formatMetadataList(value);
+      }
+
+      if (typeof value === 'object') {
+        const labels = Object.entries(value)
+          .filter(([, entryValue]) => entryValue)
+          .map(([entryKey]) => entryKey);
+
+        return labels.join(', ');
+      }
+
+      return String(value);
+    })
+    .filter(Boolean)
+    .join(', ');
 }
 
 function buildChecklistResources(item) {
@@ -395,10 +451,10 @@ function buildChecklistStarTechniques(item) {
       techniqueItem.append(suite);
     }
 
-    if (technique.tests && technique.tests.length) {
+    if (shouldDisplayTests(technique.tests)) {
       const tests = document.createElement('span');
       tests.className = 'checklist-item__subtext';
-      tests.textContent = ` Tests: ${technique.tests.join(', ')}`;
+      tests.textContent = ` Tests: ${formatDisplayList(technique.tests)}`;
       techniqueItem.append(tests);
     }
 
@@ -444,6 +500,19 @@ function buildSourceLinkList(sourceLinks) {
   }
 
   return list;
+}
+
+function shouldDisplayTests(tests) {
+  return Array.isArray(tests) && tests.length > 0 && tests.every((test) => {
+    const type = typeof test;
+    return test == null || type === 'string' || type === 'number' || type === 'boolean';
+  });
+}
+
+function formatDisplayList(values) {
+  return values
+    .map((value) => String(value))
+    .join(', ');
 }
 
 function buildTaskLayerSummary(result) {
@@ -759,6 +828,47 @@ bindChecklistPresetButton(checklistBusinessButton, {
   role: 'business and project management',
   limit: 10
 }, '#generate-checklist-business');
+
+const checklistWithTestsUxButton = document.querySelector('#generate-checklist-with-tests-ux');
+const checklistWithTestsWebDevelopmentButton = document.querySelector('#generate-checklist-with-tests-web-development');
+const checklistWithTestsHostingButton = document.querySelector('#generate-checklist-with-tests-hosting');
+const checklistWithTestsBusinessButton = document.querySelector('#generate-checklist-with-tests-business');
+
+function bindChecklistWithTestsPresetButton(element, options, description) {
+  bindClickHandler(element, async () => {
+    try {
+      const result = await generateReviewChecklistWithTests(options);
+      renderTaskLayerResult(result);
+    }
+    catch (error) {
+      output.textContent = error.message;
+    }
+  }, description);
+}
+
+bindChecklistWithTestsPresetButton(checklistWithTestsUxButton, {
+  category: 'UX Design',
+  role: 'ux design',
+  limit: 10
+}, '#generate-checklist-with-tests-ux');
+
+bindChecklistWithTestsPresetButton(checklistWithTestsWebDevelopmentButton, {
+  category: 'Web Development',
+  role: 'web development',
+  limit: 10
+}, '#generate-checklist-with-tests-web-development');
+
+bindChecklistWithTestsPresetButton(checklistWithTestsHostingButton, {
+  category: 'Hosting and Infrastructure',
+  role: 'hosting and infrastructure',
+  limit: 10
+}, '#generate-checklist-with-tests-hosting');
+
+bindChecklistWithTestsPresetButton(checklistWithTestsBusinessButton, {
+  category: 'Business Strategy And Product Management',
+  role: 'business and project management',
+  limit: 10
+}, '#generate-checklist-with-tests-business');
 
 const starStatsButton = document.querySelector('#load-star-stats');
 const starAlignmentButton = document.querySelector('#validate-star-alignment');

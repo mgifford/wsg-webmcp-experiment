@@ -149,6 +149,27 @@ a:hover {
   color: var(--link-hover);
 }
 
+.section-anchor {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.section-anchor:hover,
+.section-anchor:focus-visible {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.section-anchor__marker {
+  color: var(--text-muted);
+  font-size: 0.75em;
+  font-weight: 800;
+  line-height: 1;
+}
+
 a:focus-visible,
 button:focus-visible,
 input:focus-visible {
@@ -304,6 +325,12 @@ pre code {
   font-family: var(--heading-font);
   line-height: 1.15;
   letter-spacing: -0.02em;
+}
+
+.panel[id],
+.panel h2[id],
+.panel h3[id] {
+  scroll-margin-top: 1.25rem;
 }
 
 .hero h2 {

@@ -31,7 +31,12 @@
     <section class="hero">
       <div class="hero__inner stack">
         <p class="eyebrow">Prototype status</p>
-        <h2>Test WSG data as both a page and a tool surface.</h2>
+        <h2 id="prototype-status" tabindex="-1">
+          <a class="section-anchor" href="#prototype-status">
+            <span>Test WSG data as both a page and a tool surface.</span>
+            <span class="section-anchor__marker" aria-hidden="true">#</span>
+          </a>
+        </h2>
 
         <p class="lede">
           This page works as a normal JavaScript demo in modern browsers. When WebMCP is
@@ -58,7 +63,12 @@
       <div class="stack">
         <section class="panel">
           <div class="panel__inner stack">
-            <h2>Search WSG</h2>
+            <h2 id="search-wsg" tabindex="-1">
+              <a class="section-anchor" href="#search-wsg">
+                <span>Search WSG</span>
+                <span class="section-anchor__marker" aria-hidden="true">#</span>
+              </a>
+            </h2>
 
             <p>
               Search the guideline data by keyword, category, or tag. The current browser demo
@@ -78,7 +88,12 @@
 
         <section class="panel">
           <div class="panel__inner stack">
-            <h2>Stats</h2>
+            <h2 id="stats" tabindex="-1">
+              <a class="section-anchor" href="#stats">
+                <span>Stats</span>
+                <span class="section-anchor__marker" aria-hidden="true">#</span>
+              </a>
+            </h2>
 
             <p>
               Load a small summary of the indexed data to confirm the data layer is working.
@@ -92,7 +107,12 @@
 
         <section class="panel">
           <div class="panel__inner stack">
-            <h2>Find relevant WSG guidance</h2>
+            <h2 id="find-relevant-wsg-guidance" tabindex="-1">
+              <a class="section-anchor" href="#find-relevant-wsg-guidance">
+                <span>Find relevant WSG guidance</span>
+                <span class="section-anchor__marker" aria-hidden="true">#</span>
+              </a>
+            </h2>
 
             <p>
               Describe a design or product decision in plain language. The demo will match the
@@ -113,7 +133,12 @@
 
         <section class="panel">
           <div class="panel__inner stack">
-            <h2>Review procurement requirement</h2>
+            <h2 id="review-procurement-requirement" tabindex="-1">
+              <a class="section-anchor" href="#review-procurement-requirement">
+                <span>Review procurement requirement</span>
+                <span class="section-anchor__marker" aria-hidden="true">#</span>
+              </a>
+            </h2>
 
             <p>
               Describe a contract requirement in plain language. The demo will flag likely concerns
@@ -133,7 +158,12 @@
 
         <section class="panel">
           <div class="panel__inner stack">
-            <h2>Generate review checklist</h2>
+            <h2 id="generate-review-checklist" tabindex="-1">
+              <a class="section-anchor" href="#generate-review-checklist">
+                <span>Generate review checklist</span>
+                <span class="section-anchor__marker" aria-hidden="true">#</span>
+              </a>
+            </h2>
 
             <p>
               This demo can draft checklist items from WSG guidance. The output still needs human
@@ -152,7 +182,12 @@
 
         <section class="panel">
           <div class="panel__inner stack">
-            <h2>STAR checks</h2>
+            <h2 id="star-checks" tabindex="-1">
+              <a class="section-anchor" href="#star-checks">
+                <span>STAR checks</span>
+                <span class="section-anchor__marker" aria-hidden="true">#</span>
+              </a>
+            </h2>
 
             <p>
               STAR provides testing and reporting techniques that can be linked back to WSG
@@ -163,21 +198,30 @@
               <button id="load-star-stats" type="button">Load STAR stats</button>
               <button id="validate-star-alignment" type="button" class="secondary">Check STAR / WSG alignment</button>
               <button id="generate-checklist-with-tests" type="button">Accessibility checklist with STAR tests</button>
+              <button id="generate-checklist-with-tests-ux" type="button" class="secondary">UX checklist with STAR tests</button>
+              <button id="generate-checklist-with-tests-web-development" type="button" class="secondary">Web Development checklist with STAR tests</button>
+              <button id="generate-checklist-with-tests-hosting" type="button" class="secondary">Hosting and Infrastructure checklist with STAR tests</button>
+              <button id="generate-checklist-with-tests-business" type="button" class="secondary">Business and Project Management checklist with STAR tests</button>
             </div>
           </div>
         </section>
       </div>
 
-      <section class="panel panel--output">
+      <section class="panel panel--output" id="output" tabindex="-1">
         <div class="panel__inner stack">
-          <h2>Output</h2>
+          <h2>
+            <a class="section-anchor" href="#output">
+              <span>Output</span>
+              <span class="section-anchor__marker" aria-hidden="true">#</span>
+            </a>
+          </h2>
 
           <p>
             Results from searches and generators appear here. Source links and raw JSON are kept
             alongside each result so the draft is easy to inspect and verify.
           </p>
 
-          <div id="output" class="results" role="status" aria-live="polite" aria-atomic="true"></div>
+          <div id="output-content" class="results" role="status" aria-live="polite" aria-atomic="true"></div>
 
           <p class="lede">
             The output area is a live region so screen reader users hear updates when the page
@@ -187,9 +231,14 @@
       </section>
     </div>
 
-    <section class="panel" id="registered-webmcp-tools">
+    <section class="panel" id="registered-webmcp-tools" tabindex="-1">
       <div class="panel__inner stack">
-        <h2>Registered WebMCP tools</h2>
+        <h2>
+          <a class="section-anchor" href="#registered-webmcp-tools">
+            <span>Registered WebMCP tools</span>
+            <span class="section-anchor__marker" aria-hidden="true">#</span>
+          </a>
+        </h2>
 
         <p>
           The browser can expose these functions to compatible WebMCP agents.
@@ -246,6 +295,6 @@
     </p>
   </footer>
 
-  <script type="module" src="./src/app.js"></script>
+  <script type="module" src="./src/app.js?v=20260612-4"></script>
 </body>
 </html>
