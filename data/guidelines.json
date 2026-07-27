@@ -606,7 +606,7 @@
 					"criteria": [
 						{
 							"title": "Design system",
-							"description": "Use a design system for large projects or projects with many contributors to improve consistency, performance, and long-term sustainability. Use reusable components based on web standards, load only the components needed for each page or feature, and maintain the system through clear ownership, versioning, and updated documentation. Follow established design patterns and conventions.",
+							"description": "Use a design system for large projects or those with many contributors to improve consistency, performance, and long-term sustainability. Use reusable components based on web standards, load only the components needed for each page or feature, and maintain the system through clear ownership, versioning, and updated documentation. Follow established design patterns and conventions.",
 							"resources": [
 								{
 									"4 Ways to Make Your Code More Reusable": "https://medium.com/@lanceharvieruntime/4-ways-to-make-your-code-more-reusable-bc20889c1e4",
@@ -858,7 +858,7 @@
 						},
 						{
 							"title": "Avoiding overburdening",
-							"description": "Limit the number and frequency of animations to reduce distraction, lower resource use, and avoid affecting device performance. Set a maximum number of replays or iterations.",
+							"description": "Limit the number and frequency of animations to reduce distraction, minimize resource use, and maintain expected device performance. Set a maximum number of replays or iterations.",
 							"resources": [
 								{
 									"Equations relating total annual energy consumption and chips energy efficiency": "https://www.researchgate.net/publication/371938289_Equations_relating_total_annual_energy_consumption_and_chips_energy_efficiency",
@@ -1236,7 +1236,7 @@
 						},
 						{
 							"title": "Performance testing",
-							"description": "Identify and resolve bottlenecks or issues in the underlying code or infrastructure which could impact sustainability and performance to encourage a smooth, frictionless user journey. Consider both simulated and real-world metrics. Monitor performance across every release cycle using appropriate tooling or through research and auditing.",
+							"description": "Identify and resolve bottlenecks or issues in the underlying code or infrastructure which could impact sustainability and performance to encourage a smooth, frictionless user journey. Account for both simulated and real-world metrics. Monitor performance across every release cycle using appropriate tooling or through research and auditing.",
 							"resources": [
 								{
 									"2025 In Review: What's New In Web Performance": "https://www.debugbear.com/blog/2025-in-web-performance",
@@ -1581,7 +1581,7 @@
 					"criteria": [
 						{
 							"title": "Minified code",
-							"description": "Minify code and data files by removing unnecessary whitespace, comments, and non-essential characters. Apply this consistently across the system to reduce file size and improve loading efficiency. This helps reduce cumulative data transfer and processing overhead at scale, improving resource efficiency and lowering energy consumption.",
+							"description": "Minify code and data files by removing unnecessary whitespace, comments, attributes, and non-essential characters. Apply this consistently across the system to reduce file size and improve loading efficiency. This helps to reduce cumulative data transfer and processing overhead at scale, improving resource efficiency and reducing energy consumption. Ensure that minification does not introduce any errors.",
 							"resources": [
 								{
 									"Comparing HTML Minifiers": "https://meiert.com/blog/comparing-html-minifiers/",
@@ -1743,7 +1743,7 @@
 					"criteria": [
 						{
 							"title": "Assess and reduce",
-							"description": "Review third-party content and/or services early in the design or ideation process, including plugins, widgets, feeds, maps, carousels, tracking scripts, and similar components. Use as few as possible, preferring lightweight options to reduce overall environmental impact, including GHG Protocol Scope 3 emissions. Ensure third-party providers enforce the same compliance, security, privacy, data retention limits, data deletion policies, and mandatory security update standards as the first party.",
+							"description": "Review third-party content and/or services early in the design or ideation process, including plugins, widgets, feeds, maps, carousels, tracking scripts, and similar components. Use as few as possible, preferring lightweight options to reduce overall environmental impact, including GHG Protocol Scope 3 emissions. Ensure third-party providers enforce the same compliance, security, privacy, data retention limits, data deletion policies, and mandatory security update standards as the first party. Account for long-term dependency risks when selecting third-party services, including data portability and transition options.",
 							"resources": [
 								{
 									"6 steps to reduce the carbon footprint of your website": "https://opensource.com/article/23/3/reduce-carbon-footprint-website",
@@ -2567,7 +2567,7 @@
 					"criteria": [
 						{
 							"title": "Appropriate Implementation",
-							"description": "Choose implementation approaches that balance effort, performance, and environmental impact. Simpler solutions may reduce complexity and runtime impact but require more human effort, while prebuilt tools may reduce build time and development effort but increase ongoing resource use.",
+							"description": "Choose implementation approaches that balance effort, performance, and environmental impact. Simpler solutions may reduce complexity and runtime impact but require more human effort, while prebuilt tools may reduce build time and development effort but increase ongoing resource use. Evaluate the environmental cost of build processes, asset transformations, and external dependencies, ensuring every layer delivers genuine user value.",
 							"resources": [
 								{
 									"A Guide to Functional Requirements": "https://www.nuclino.com/articles/functional-requirements",
@@ -2622,7 +2622,7 @@
 						},
 						{
 							"title": "Extensions and plugins",
-							"description": "Review plugins, extensions, and themes regularly to ensure they remain compatible with the platform and other components, efficient, and accessible.",
+							"description": "Review plugins, extensions, and themes regularly to ensure they remain compatible with the platform and other components, are efficient, and accessible.",
 							"resources": [
 								{
 									"AFNOR Spec 5.3.3 & 5.2.2 (French)": "https://www.boutique.afnor.org/en-gb/standard/afnor-spec-2201//fa203506/323315",
@@ -2662,7 +2662,7 @@
 							"Security": "Maintaining a software product and restricting your use of third-party solutions to the essential will improve overall security."
 						}
 					],
-					"tags": ["Accessibility", "Compatibility", "Ideation", "Performance", "Privacy", "Security", "Software", "Strategy"]
+					"tags": ["Accessibility", "AI", "Compatibility", "Ideation", "Performance", "Privacy", "Security", "Software", "Strategy"]
 				},
 				{
 					"id": "use-the-latest-stable-language-version",
@@ -3124,7 +3124,7 @@
 					"criteria": [
 						{
 							"title": "Server-side compression",
-							"description": "Reduce file size before uploading images, audio, and video by using efficient formats and quality settings. Avoid applying additional compression if the file is already appropriately sized for upload.",
+							"description": "Use server-side compression settings and tools to compress commonly used file types when appropriate. Ensure that compression reduces energy consumption, minimizes load times, saves bandwidth, and improves overall performance. Do not apply additional compression to files that are already appropriately sized for upload.",
 							"resources": [
 								{
 									"10 Steps to Avoid Enormous Network Payloads": "https://www.debugbear.com/blog/avoid-enormous-network-payloads",
@@ -3260,7 +3260,7 @@
 					"criteria": [
 						{
 							"title": "Unused environments",
-							"description": "Reduce the number of active environments by deactivating, offlining, or removing unused or redundant virtual and physical environments (e.g., containers and virtual machines) wherever this can be done without reducing required security, isolation, or compliance guarantees. Also evaluate running services in the same way. Similarly, codebases and setups for unused branches, environments, and services, and remove what is no longer needed.",
+							"description": "Reduce the number of active environments by deactivating, offlining, or removing unused or redundant virtual and physical environments (e.g., containers and virtual machines) wherever this can be done without reducing required security, isolation, or compliance guarantees. Optimize active environments by tailoring resource allocations to actual workload demand, sharing common services, and eliminating duplicate tasks while maintaining necessary isolation.",
 							"resources": [
 								{
 									"AWS WAF - SUS02-BP03 - Stop the creation and maintenance of unused assets": "https://docs.aws.amazon.com/wellarchitected/latest/sustainability-pillar/sus_sus_user_a4.html",
@@ -3291,7 +3291,7 @@
 					"criteria": [
 						{
 							"title": "Task automation",
-							"description": "Automate recurring tasks such as deployment, testing, and compilation in alignment with continuous integration and continuous delivery (CI/CD) best practices to reduce manual effort and improve consistency. Favor automation tools and platforms with lower environmental impact, and avoid unnecessary duplication of automation systems.",
+							"description": "Automate recurring tasks such as deployment, testing, and compilation in alignment with continuous integration and continuous delivery (CI/CD) best practices to reduce manual effort and improve consistency. Choose automation tools and platforms with lower environmental impact. Avoid complexity and duplication of automation systems.",
 							"resources": [
 								{
 									"AWS WAF - SEC11-BP02 - Automate testing throughout the development and release lifecycle": "https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/sec_appsec_automate_testing_throughout_lifecycle.html",
@@ -3311,7 +3311,7 @@
 						},
 						{
 							"title": "Necessary tasks",
-							"description": "Run automated tasks only when they are needed to avoid unnecessary resource use.",
+							"description": "Run automated tasks only when they are needed to avoid unnecessary resource use. Regularly review automated tasks to ensure they remain necessary, efficient, secure, and beneficial.",
 							"resources": [
 								{
 									"AWS WAF - SEC11-BP02 - Automate testing throughout the development and release lifecycle": "https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/sec_appsec_automate_testing_throughout_lifecycle.html",
@@ -3330,14 +3330,18 @@
 						},
 						{
 							"title": "Automated scaling",
-							"description": "Use autoscaling to adjust server capacity based on demand. Implement buffering and throttling to manage load pressures. Scale resources up during high demand and scale down when demand drops to avoid overprovisioning.",
+							"description": "Regularly review infrastructure utilization and reduce allocated capacity when resources are consistently underused. Manage workloads to ensure efficient resource use by isolating, limiting, and prioritizing processes where needed to prevent resource contention and unnecessary consumption. Use autoscaling, buffering, throttling and other techniques to scale resource utilization to avoid overprovisioning.",
 							"resources": [
 								{
 									"2020 Best Practice Guidelines for the EU Code of Conduct on Data Centre Energy Efficiency (PDF)": "https://e3p.jrc.ec.europa.eu/sites/default/files/2023-09/jrc119571_jrc119571_2020_best_practice_guidelines_v11.1.0a_br_ma_21_jan.pdf",
+									"A view of cloud computing": "https://dl.acm.org/doi/10.1145/1721654.1721672",
 									"AWS WAF - SUS02-BP01 - Scale workload infrastructure dynamically": "https://docs.aws.amazon.com/wellarchitected/latest/sustainability-pillar/sus_sus_user_a2.html",
 									"AWS WAF - SUS03-BP01 - Optimize software and architecture for asynchronous and scheduled jobs": "https://docs.aws.amazon.com/wellarchitected/latest/framework/sus_sus_software_a2.html",
+									"Carbon-Efficient Software Design and Development: A Systematic Literature Review": "https://arxiv.org/abs/2407.19901",
 									"Code of Conduct on Data Centre Energy Efficiency": "https://joint-research-centre.ec.europa.eu/document/download/0549a8bc-02da-4b05-896d-4728a4a54ab4_en?filename=Brochure",
 									"EMPower: The Case for a Cloud Power Control Plane (PDF)": "https://hotcarbon.org/assets/2024/pdf/hotcarbon24-final57.pdf",
+									"Energy-aware resource allocation heuristics for efficient management of data centers for Cloud computing": "https://www.sciencedirect.com/science/article/abs/pii/S0167739X11000689",
+									"Energy-Efficient Management of Data Center Resources for Cloud Computing": "https://arxiv.org/abs/1006.0308",
 									"GR491 - 3-8028 - Memory Usage": "https://gr491.isit-europe.org/en/crit.php?id=3-8028-hosting-the-management-of-the-consumption-of-physical",
 									"GR491 - 3-8029 - CPU Usage": "https://gr491.isit-europe.org/en/crit.php?id=3-8029-hosting-the-cpu-resources-available-to-virtual-machines",
 									"GR491 - 3-8031 - Unused CPU Cores": "https://gr491.isit-europe.org/en/crit.php?id=3-8031-hosting-hosted-services-do-not-always-have-the",
@@ -3345,13 +3349,14 @@
 									"How Green is Your Data Center?": "https://www.readyworks.com/blog/how-green-is-your-data-center-use-automation-to-simplify-esg-reporting",
 									"If only data centers would participate in demand response": "https://davidmytton.blog/if-only-data-centers-would-participate-in-demand-response/",
 									"Load shifting of computing can lower emissions and soak up surplus renewables. Except when it doesn't": "https://watttime.org/news-and-insights/load-shifting-of-computing-can-lower-emissions-and-soak-up-surplus-renewables-except-when-it-doesnt/",
-									"Microsoft Azure WAF - Sustainable workloads": "https://learn.microsoft.com/en-us/azure/well-architected/sustainability/sustainability-get-started"
+									"Microsoft Azure WAF - Sustainable workloads": "https://learn.microsoft.com/en-us/azure/well-architected/sustainability/sustainability-get-started",
+									"Optimize resource usage for sustainability": "https://docs.cloud.google.com/architecture/framework/sustainability/optimize-resource-usage"
 								}
 							]
 						},
 						{
 							"title": "Suspicious activity management",
-							"description": "Restrict unwanted and unnecessary third-party crawlers, user agents, bots, and scrapers using security controls, while ensuring content remains accessible to legitimate users, search engines, and helpful or authorized crawlers. Take into account that some scrapers may be used for beneficial purposes, including informing or training large language models.",
+							"description": "Restrict unwanted and unnecessary third-party crawlers, user agents, bots, and scrapers using security controls, while ensuring content remains accessible to legitimate users, search engines, and helpful or authorized crawlers. Regularly monitor activity logs to evaluate control effectiveness and identify unexpected traffic patterns. Take into account that some scrapers may be used for beneficial purposes, or to inform or train large language models.",
 							"resources": [
 								{
 									"63% of Websites Receive AI Traffic": "https://ahrefs.com/blog/ai-traffic-study/",
@@ -3764,7 +3769,7 @@
 						},
 						{
 							"title": "Lifecycle management",
-							"description": "Use classification and tagging policies to define and manage data lifecycle rules, including retention, expiration, and archival.",
+							"description": "Use classification and tagging policies to define and manage data lifecycle rules, including retention, expiration, and archiving. Align storage choices to how frequently data is accessed, shifting less frequently used data to energy-efficient storage.",
 							"resources": [
 								{
 									"5 Types of Data Classification (With Examples)": "https://www.indeed.com/career-advice/career-development/data-classification-types",
@@ -3800,7 +3805,7 @@
 						},
 						{
 							"title": "Optimized logging",
-							"description": "Manage logs with regular rotation, retention, compression, and backup practices, including scheduling resource-intensive operations during low-activity periods where practical to reduce energy demand and operational overhead. Use resilient backup strategies, including off-site storage when necessary for resilience or recovery, and remove sensitive information from logs wherever possible to minimize security and privacy risks.",
+							"description": "Manage logs with regular rotation, retention, compression, and backup practices to reduce storage and processing overhead. Schedule resource-intensive operations during low-activity periods, use resilient backups, including off-site storage where needed, and remove sensitive information where possible to minimize security and privacy risks. Use logs, monitoring, and alerts at a regular frequency and scope to provide value while avoiding unnecessary processing, storage, and network use. Use collected data to identify and reduce avoidable resource consumption, such as unnecessary automated requests.",
 							"resources": [
 								{
 									"An Engineer's Checklist of Logging Best Practices": "https://www.honeycomb.io/blog/engineers-checklist-logging-best-practices",
@@ -3853,7 +3858,7 @@
 					"criteria": [
 						{
 							"title": "Public documents",
-							"description": "Develop, publish, and maintain key organizational policies such as a code of ethics, product guidelines, accessibility, and sustainability statements. Include clear language for digital products, services, and emerging or disruptive technologies, such as AI. Make these policies publicly accessible and keep them versioned for transparency.",
+							"description": "Develop, publish, and maintain key organizational policies such as a code of ethics, product guidelines, cloud sustainability strategy, and accessibility and sustainability statements. Use clear language to describe digital products, services, and emerging or disruptive technologies, such as AI. Make these policies publicly accessible and keep them versioned for transparency.",
 							"resources": [
 								{
 									"#Tech4Bad: When Do We Say No?": "https://branch.climateaction.tech/issues/issue-3/tech4bad-when-do-we-say-no/",
@@ -4831,7 +4836,7 @@
 					"criteria": [
 						{
 							"title": "Vetting potential partners",
-							"description": "Apply sustainability principles across supply chain partner selection and governance, supported by clear policies for vetting and assessing potential partners.",
+							"description": "Apply sustainability principles when selecting and managing suppliers, partners, and service providers across supply chains. Establish procurement criteria and due diligence practices that consider environmental and social impacts and relevant lifecycle considerations.",
 							"resources": [
 								{
 									"Client, Partner, and Supplier Screening Tools for Positive Impact Supply Chains": "https://bthechange.com/client-partner-and-supplier-screening-tools-for-positive-impact-supply-chains-6edf0eb156fc",
@@ -5227,7 +5232,7 @@
 						},
 						{
 							"title": "Environmental responsibilities",
-							"description": "Audit and account for environmental impacts linked to the promotion or adoption of AI and emerging or disruptive technologies. This includes third-party systems and the waste, water, and emissions generated per use, as well as those resulting from initial deployment and updates. Prioritize efficiency and deployment in a way that minimizes environmental impacts.",
+							"description": "Evaluate the need for AI and emerging or disruptive technologies before implementation to avoid unnecessary resource use. Optimize models and deployment processes for efficiency. Measure, assess, and account for their environmental impacts throughout their lifecycle. Include impacts from first-party and third-party sources, using available data or credible estimates where direct data is unavailable. Prioritize approaches that minimize negative environmental impacts.",
 							"resources": [
 								{
 									"3rd Global CryptoAsset Benchmarking Study (PDF)": "https://www.jbs.cam.ac.uk/wp-content/uploads/2021/01/2021-ccaf-3rd-global-cryptoasset-benchmarking-study.pdf",
